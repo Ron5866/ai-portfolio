@@ -1,5 +1,6 @@
 import { Github, Download, ArrowRight } from 'lucide-react';
 import TypingEffect from '../TypingEffect';
+import profilePhoto from '@/assets/profile-photo.png';
 
 const HeroSection = () => {
   const roles = [
@@ -14,80 +15,105 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center pt-20">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-3xl">
-          {/* Hello */}
-          <div className="animate-fade-in opacity-0" style={{ animationDelay: '0.2s' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-2">
-              Hello<span className="text-primary">.</span>
-            </h2>
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          {/* Left Content */}
+          <div className="max-w-xl">
+            {/* Hello */}
+            <div className="animate-fade-in opacity-0" style={{ animationDelay: '0.2s' }}>
+              <h2 className="text-4xl md:text-5xl font-display font-bold mb-2">
+                Hello<span className="text-primary">.</span>
+              </h2>
+            </div>
+
+            {/* Name */}
+            <h1 
+              className="text-3xl md:text-4xl font-display font-medium text-muted-foreground mb-4 animate-fade-in opacity-0"
+              style={{ animationDelay: '0.4s' }}
+            >
+              I'm <span className="text-foreground">Ronald</span>
+            </h1>
+
+            {/* Typing Effect Role */}
+            <div 
+              className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-8 animate-fade-in opacity-0"
+              style={{ animationDelay: '0.6s' }}
+            >
+              <TypingEffect texts={roles} typingSpeed={80} deletingSpeed={40} pauseDuration={2500} />
+            </div>
+
+            {/* CTA Buttons */}
+            <div 
+              className="flex flex-wrap items-center gap-4 mb-16 animate-fade-in opacity-0"
+              style={{ animationDelay: '0.8s' }}
+            >
+              <a
+                href="#projects"
+                className="btn-neon-filled flex items-center gap-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                View Projects
+                <ArrowRight size={18} />
+              </a>
+              <a
+                href="/Ronald_Ritch_Babu_Resume.pdf"
+                download="Ronald_Ritch_Babu_Resume.pdf"
+                className="btn-neon flex items-center gap-2"
+              >
+                <Download size={18} />
+                My Resume
+              </a>
+              <a
+                href="https://github.com/Ron5866"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-neon flex items-center gap-2"
+              >
+                <Github size={18} />
+                GitHub
+              </a>
+            </div>
+
+            {/* Tech Stack Bar */}
+            <div 
+              className="animate-fade-in opacity-0"
+              style={{ animationDelay: '1s' }}
+            >
+              <div className="flex flex-wrap items-center gap-6 py-4 border-t border-b border-border/50">
+                {techStack.map((tech, index) => (
+                  <span 
+                    key={tech}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors cursor-default"
+                    style={{ animationDelay: `${1 + index * 0.1}s` }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Name */}
-          <h1 
-            className="text-3xl md:text-4xl font-display font-medium text-muted-foreground mb-4 animate-fade-in opacity-0"
-            style={{ animationDelay: '0.4s' }}
-          >
-            I'm <span className="text-foreground">Ronald</span>
-          </h1>
-
-          {/* Typing Effect Role */}
+          {/* Right - Profile Photo */}
           <div 
-            className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-8 animate-fade-in opacity-0"
+            className="hidden lg:flex justify-center items-center animate-fade-in opacity-0"
             style={{ animationDelay: '0.6s' }}
           >
-            <TypingEffect texts={roles} typingSpeed={80} deletingSpeed={40} pauseDuration={2500} />
-          </div>
-
-          {/* CTA Buttons */}
-          <div 
-            className="flex flex-wrap items-center gap-4 mb-16 animate-fade-in opacity-0"
-            style={{ animationDelay: '0.8s' }}
-          >
-            <a
-              href="#projects"
-              className="btn-neon-filled flex items-center gap-2"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              View Projects
-              <ArrowRight size={18} />
-            </a>
-            <a
-              href="/Ronald_Ritch_Babu_Resume.pdf"
-              download="Ronald_Ritch_Babu_Resume.pdf"
-              className="btn-neon flex items-center gap-2"
-            >
-              <Download size={18} />
-              My Resume
-            </a>
-            <a
-              href="https://github.com/Ron5866"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-neon flex items-center gap-2"
-            >
-              <Github size={18} />
-              GitHub
-            </a>
-          </div>
-
-          {/* Tech Stack Bar */}
-          <div 
-            className="animate-fade-in opacity-0"
-            style={{ animationDelay: '1s' }}
-          >
-            <div className="flex flex-wrap items-center gap-6 py-4 border-t border-b border-border/50">
-              {techStack.map((tech, index) => (
-                <span 
-                  key={tech}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors cursor-default"
-                  style={{ animationDelay: `${1 + index * 0.1}s` }}
-                >
-                  {tech}
-                </span>
-              ))}
+            <div className="relative">
+              {/* Gradient blur behind image */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/20 to-transparent blur-3xl scale-110 rounded-full" />
+              
+              {/* Profile image with blend effect */}
+              <img
+                src={profilePhoto}
+                alt="Ronald Ritch Babu"
+                className="relative w-[350px] h-auto object-contain drop-shadow-2xl"
+                style={{
+                  maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+                }}
+              />
             </div>
           </div>
         </div>
