@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
+  { label: 'Home', href: '#' },
   { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -24,8 +23,12 @@ const Navigation = () => {
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
-    const element = document.querySelector(href);
-    element?.scrollIntoView({ behavior: 'smooth' });
+    if (href === '#') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const element = document.querySelector(href);
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -39,10 +42,13 @@ const Navigation = () => {
           {/* Logo */}
           <a
             href="#"
-            className="font-display text-xl md:text-2xl font-bold text-primary text-glow"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="font-display text-xl md:text-2xl font-semibold text-foreground"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
           >
-            RRB<span className="text-accent">.</span>
+            Ronald Ritch<span className="text-primary">.</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -51,21 +57,11 @@ const Navigation = () => {
               <button
                 key={item.label}
                 onClick={() => handleNavClick(item.href)}
-                className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium animated-underline"
+                className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-medium"
               >
                 {item.label}
               </button>
             ))}
-            <a
-              href="#"
-              className="btn-neon text-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('#contact');
-              }}
-            >
-              Get In Touch
-            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -89,17 +85,11 @@ const Navigation = () => {
               <button
                 key={item.label}
                 onClick={() => handleNavClick(item.href)}
-                className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium text-left"
+                className="text-muted-foreground hover:text-foreground transition-colors duration-300 font-medium text-left"
               >
                 {item.label}
               </button>
             ))}
-            <button
-              onClick={() => handleNavClick('#contact')}
-              className="btn-neon text-sm w-fit mt-2"
-            >
-              Get In Touch
-            </button>
           </div>
         </div>
       </div>

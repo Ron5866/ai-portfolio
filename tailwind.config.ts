@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Space Grotesk', 'sans-serif'],
-        display: ['Orbitron', 'sans-serif'],
-        tech: ['Rajdhani', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif'],
+        display: ['Poppins', 'sans-serif'],
+        tech: ['Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -63,10 +63,9 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         neon: {
-          cyan: "hsl(var(--neon-cyan))",
-          blue: "hsl(var(--neon-blue))",
-          purple: "hsl(var(--neon-purple))",
-          pink: "hsl(var(--neon-pink))",
+          orange: "hsl(var(--neon-orange))",
+          coral: "hsl(var(--neon-coral))",
+          amber: "hsl(var(--neon-amber))",
         },
       },
       borderRadius: {
