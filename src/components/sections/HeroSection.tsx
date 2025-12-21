@@ -13,7 +13,7 @@ const HeroSection = () => {
   const techStack = ['Python', 'TensorFlow', 'LangChain', 'PyTorch', 'OpenCV', 'Hugging Face'];
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20">
+    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* Left Content */}
@@ -27,15 +27,15 @@ const HeroSection = () => {
 
             {/* Name */}
             <h1 
-              className="text-3xl md:text-4xl font-display font-medium text-muted-foreground mb-4 animate-fade-in opacity-0"
+              className="text-2xl md:text-3xl font-display font-medium text-muted-foreground mb-4 animate-fade-in opacity-0"
               style={{ animationDelay: '0.4s' }}
             >
-              I'm <span className="text-foreground">Ronald</span>
+              I'm <span className="text-foreground font-semibold">Ronald</span>
             </h1>
 
             {/* Typing Effect Role */}
             <div 
-              className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-8 animate-fade-in opacity-0"
+              className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-8 animate-fade-in opacity-0"
               style={{ animationDelay: '0.6s' }}
             >
               <TypingEffect texts={roles} typingSpeed={80} deletingSpeed={40} pauseDuration={2500} />
@@ -95,24 +95,57 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right - Profile Photo */}
+          {/* Right - Profile Photo with Arc */}
           <div 
             className="hidden lg:flex justify-center items-center animate-fade-in opacity-0"
             style={{ animationDelay: '0.6s' }}
           >
-            <div className="relative">
-              {/* Gradient blur behind image */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/20 to-transparent blur-3xl scale-110 rounded-full" />
+            <div className="relative w-[420px] h-[420px] flex items-center justify-center">
+              {/* Decorative arc ring */}
+              <svg 
+                className="absolute inset-0 w-full h-full animate-[spin_20s_linear_infinite]"
+                viewBox="0 0 420 420"
+              >
+                <defs>
+                  <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="hsl(var(--primary))" />
+                    <stop offset="50%" stopColor="hsl(var(--accent))" />
+                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+                  </linearGradient>
+                </defs>
+                {/* Main arc */}
+                <circle 
+                  cx="210" 
+                  cy="210" 
+                  r="180" 
+                  fill="none" 
+                  stroke="url(#arcGradient)" 
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  strokeDasharray="400 700"
+                  className="drop-shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
+                />
+                {/* Secondary arc */}
+                <circle 
+                  cx="210" 
+                  cy="210" 
+                  r="195" 
+                  fill="none" 
+                  stroke="hsl(var(--primary)/0.3)" 
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeDasharray="200 900"
+                />
+              </svg>
               
-              {/* Profile image with blend effect */}
+              {/* Glow background */}
+              <div className="absolute inset-0 bg-gradient-radial from-primary/20 via-transparent to-transparent blur-2xl" />
+              
+              {/* Profile image */}
               <img
                 src={profilePhoto}
                 alt="Ronald Ritch Babu"
-                className="relative w-[350px] h-auto object-contain drop-shadow-2xl"
-                style={{
-                  maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
-                }}
+                className="relative z-10 w-[300px] h-auto object-contain drop-shadow-[0_0_30px_hsl(var(--primary)/0.3)]"
               />
             </div>
           </div>
