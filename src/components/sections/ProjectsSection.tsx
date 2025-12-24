@@ -1,15 +1,26 @@
 import { useEffect, useRef } from 'react';
-import { Github, ExternalLink, BookOpen, MessageSquare, Film, Users, Brain } from 'lucide-react';
+import { Github, ExternalLink, BookOpen, MessageSquare, Film, Users, Brain, Dumbbell } from 'lucide-react';
 
 interface Project {
   title: string;
   description: string;
   techStack: string[];
   githubUrl: string;
+  liveUrl?: string;
   icon: React.ElementType;
+  featured?: boolean;
 }
 
 const projects: Project[] = [
+  {
+    title: 'FitHub - AI Fitness Tracker',
+    description: 'A comprehensive AI-powered fitness tracking application that helps users achieve their fitness goals with personalized workout plans, progress tracking, and intelligent recommendations.',
+    techStack: ['React', 'TypeScript', 'AI/ML', 'Tailwind CSS', 'Vercel'],
+    githubUrl: 'https://github.com/Ron5866',
+    liveUrl: 'https://fithub-ai.vercel.app/',
+    icon: Dumbbell,
+    featured: true,
+  },
   {
     title: 'Book Recommendation System',
     description: 'An intelligent book recommendation engine using LangChain and vector embeddings to provide personalized suggestions based on user preferences and reading history.',
@@ -85,12 +96,67 @@ const ProjectsSection = () => {
           </p>
         </div>
 
-        {/* Projects Grid */}
+        {/* Featured Project */}
+        {projects.filter(p => p.featured).map((project) => (
+          <div
+            key={project.title}
+            className="scroll-fade-up glass-card group overflow-hidden mb-8 lg:flex"
+          >
+            <div className="p-8 flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-3 rounded-xl bg-primary/20 text-primary">
+                  <project.icon size={28} />
+                </div>
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-primary/20 text-primary border border-primary/30">
+                  Featured Project
+                </span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                {project.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                {project.description}
+              </p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.techStack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 rounded-full text-xs font-medium bg-secondary text-muted-foreground border border-border"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-3">
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-neon-filled inline-flex items-center gap-2"
+                >
+                  <ExternalLink size={18} />
+                  View Live
+                </a>
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-neon inline-flex items-center gap-2"
+                >
+                  <Github size={18} />
+                  Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Other Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
+          {projects.filter(p => !p.featured).map((project, index) => (
             <div
               key={project.title}
-              className="scroll-fade-up glass-card group overflow-hidden"
+              className="scroll-fade-up glass-card group overflow-hidden relative"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Card Header */}
