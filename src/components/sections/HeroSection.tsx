@@ -1,7 +1,6 @@
 import { Github, Download, ArrowRight } from 'lucide-react';
 import TypingEffect from '../TypingEffect';
-import profilePhoto from '@/assets/profile-photo.png';
-
+import NeuralNetwork3D from '../NeuralNetwork3D';
 const HeroSection = () => {
   const roles = [
     'AI Engineer',
@@ -95,58 +94,17 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right - Profile Photo with Arc */}
+          {/* Right - 3D Neural Network Visualization */}
           <div 
             className="hidden lg:flex justify-center items-center animate-fade-in opacity-0"
             style={{ animationDelay: '0.6s' }}
           >
             <div className="relative w-[420px] h-[420px] flex items-center justify-center">
-              {/* Decorative arc ring */}
-              <svg 
-                className="absolute inset-0 w-full h-full animate-[spin_20s_linear_infinite]"
-                viewBox="0 0 420 420"
-              >
-                <defs>
-                  <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="hsl(var(--primary))" />
-                    <stop offset="50%" stopColor="hsl(var(--accent))" />
-                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-                  </linearGradient>
-                </defs>
-                {/* Main arc */}
-                <circle 
-                  cx="210" 
-                  cy="210" 
-                  r="180" 
-                  fill="none" 
-                  stroke="url(#arcGradient)" 
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                  strokeDasharray="400 700"
-                  className="drop-shadow-[0_0_15px_hsl(var(--primary)/0.5)]"
-                />
-                {/* Secondary arc */}
-                <circle 
-                  cx="210" 
-                  cy="210" 
-                  r="195" 
-                  fill="none" 
-                  stroke="hsl(var(--primary)/0.3)" 
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeDasharray="200 900"
-                />
-              </svg>
-              
               {/* Glow background */}
               <div className="absolute inset-0 bg-gradient-radial from-primary/20 via-transparent to-transparent blur-2xl" />
               
-              {/* Profile image */}
-              <img
-                src={profilePhoto}
-                alt="Ronald Ritch Babu"
-                className="relative z-10 w-[300px] h-auto object-contain drop-shadow-[0_0_30px_hsl(var(--primary)/0.3)]"
-              />
+              {/* 3D Neural Network */}
+              <NeuralNetwork3D />
             </div>
           </div>
         </div>
