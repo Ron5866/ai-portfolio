@@ -1,5 +1,5 @@
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useRef, useMemo, useEffect, useState } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -30,9 +30,14 @@ const generateNetworkGeometry = () => {
   return { vertices, edges };
 };
 
-const NetworkMesh = () => {
+interface NetworkMeshProps {
+  mousePosition: { x: number; y: number };
+}
+
+const NetworkMesh = ({ mousePosition }: NetworkMeshProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const { vertices, edges } = useMemo(() => generateNetworkGeometry(), []);
+  const targetRotation = useRef({ x: 0, y: 0 });
   
   // Create line geometry for edges
   const lineGeometry = useMemo(() => {
@@ -46,11 +51,19 @@ const NetworkMesh = () => {
     return geometry;
   }, [edges]);
   
-  // Subtle rotation animation
+  // Smooth rotation animation with mouse parallax
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += 0.002;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+      // Calculate target rotation based on mouse position
+      targetRotation.current.x = mousePosition.y * 0.3;
+      targetRotation.current.y = mousePosition.x * 0.3;
+      
+      // Smooth interpolation for mouse-driven rotation
+      groupRef.current.rotation.x += (targetRotation.current.x - groupRef.current.rotation.x) * 0.05;
+      groupRef.current.rotation.y += (targetRotation.current.y - groupRef.current.rotation.y) * 0.05;
+      
+      // Add subtle continuous rotation
+      groupRef.current.rotation.y += 0.001;
     }
   });
   
@@ -107,8 +120,30 @@ const NetworkMesh = () => {
 };
 
 const NeuralNetwork3D = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Normalize mouse position relative to center (-1 to 1)
+        const x = (event.clientX - centerX) / (rect.width / 2);
+        const y = (event.clientY - centerY) / (rect.height / 2);
+        
+        setMousePosition({ x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
-    <div className="w-full h-full min-h-[300px] lg:min-h-[420px]">
+    <div ref={containerRef} className="w-full h-full min-h-[300px] lg:min-h-[420px]">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
         style={{ background: 'transparent' }}
@@ -117,7 +152,7 @@ const NeuralNetwork3D = () => {
       >
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={0.5} />
-        <NetworkMesh />
+        <NetworkMesh mousePosition={mousePosition} />
       </Canvas>
     </div>
   );
