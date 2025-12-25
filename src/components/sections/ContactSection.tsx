@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Mail, Linkedin, Github, MapPin, Send } from 'lucide-react';
 import AnimatedCard from '../AnimatedCard';
 import AnimatedButton from '../AnimatedButton';
-import RibbonGlobe from '../RibbonGlobe';
+import SpiralGalaxy from '../SpiralGalaxy';
 
 const ContactSection = () => {
   const contactLinks = [
@@ -98,7 +98,7 @@ const ContactSection = () => {
             </AnimatedCard>
           </div>
 
-          {/* Right side - Ribbon Globe */}
+          {/* Right side - Spiral Galaxy */}
           <motion.div 
             className="hidden lg:flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -107,7 +107,7 @@ const ContactSection = () => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="w-full max-w-md aspect-square">
-              <RibbonGlobe />
+              <SpiralGalaxy />
             </div>
           </motion.div>
         </div>

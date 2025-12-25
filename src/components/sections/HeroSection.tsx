@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Github, Download, ArrowRight } from 'lucide-react';
 import TypingEffect from '../TypingEffect';
-import NeuralNetwork3D from '../NeuralNetwork3D';
+import MorphingBlob from '../MorphingBlob';
 import AnimatedButton from '../AnimatedButton';
 
 const HeroSection = () => {
@@ -162,8 +162,8 @@ const HeroSection = () => {
                 }}
               />
               
-              {/* 3D Neural Network */}
-              <NeuralNetwork3D />
+              {/* 3D Morphing Blob */}
+              <MorphingBlob />
             </div>
           </motion.div>
         </div>
