@@ -3,161 +3,178 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Generate sphere points with connections
-const generateSphereNetwork = () => {
-  const points: THREE.Vector3[] = [];
-  const connections: [number, number][] = [];
-  
-  // Create points on a sphere using fibonacci sphere distribution
-  const numPoints = 120;
-  const goldenRatio = (1 + Math.sqrt(5)) / 2;
-  
-  for (let i = 0; i < numPoints; i++) {
-    const theta = 2 * Math.PI * i / goldenRatio;
-    const phi = Math.acos(1 - 2 * (i + 0.5) / numPoints);
-    
-    const radius = 2;
-    const x = radius * Math.sin(phi) * Math.cos(theta);
-    const y = radius * Math.sin(phi) * Math.sin(theta);
-    const z = radius * Math.cos(phi);
-    
-    points.push(new THREE.Vector3(x, y, z));
-  }
-  
-  // Create connections between nearby points
-  const maxDistance = 1.2;
-  for (let i = 0; i < points.length; i++) {
-    for (let j = i + 1; j < points.length; j++) {
-      const distance = points[i].distanceTo(points[j]);
-      if (distance < maxDistance && Math.random() > 0.3) {
-        connections.push([i, j]);
-      }
-    }
-  }
-  
-  return { points, connections };
-};
-
-interface NetworkMeshProps {
+interface EarthMeshProps {
   mousePosition: { x: number; y: number };
 }
 
-const NetworkMesh = ({ mousePosition }: NetworkMeshProps) => {
+const EarthMesh = ({ mousePosition }: EarthMeshProps) => {
   const groupRef = useRef<THREE.Group>(null);
-  const glowRef = useRef<THREE.Mesh>(null);
-  const { points, connections } = useMemo(() => generateSphereNetwork(), []);
+  const earthRef = useRef<THREE.Mesh>(null);
   const targetRotation = useRef({ x: 0, y: 0 });
   
-  // Create line geometry for connections
-  const lineGeometry = useMemo(() => {
-    const positions: number[] = [];
-    connections.forEach(([i, j]) => {
-      positions.push(points[i].x, points[i].y, points[i].z);
-      positions.push(points[j].x, points[j].y, points[j].z);
+  // Create orbital rings data
+  const rings = useMemo(() => [
+    { radius: 2.4, thickness: 0.08, rotation: [0.3, 0, 0.2], opacity: 0.9, color: '#e8d5c4' },
+    { radius: 2.6, thickness: 0.06, rotation: [0.5, 0.3, -0.1], opacity: 0.7, color: '#d4c4b5' },
+    { radius: 2.2, thickness: 0.05, rotation: [-0.2, 0.5, 0.3], opacity: 0.6, color: '#c9b8a8' },
+    { radius: 2.8, thickness: 0.04, rotation: [0.1, -0.2, 0.4], opacity: 0.5, color: '#bfae9e' },
+    { radius: 3.0, thickness: 0.035, rotation: [-0.4, 0.1, -0.2], opacity: 0.4, color: '#f0e6dc' },
+  ], []);
+
+  // Create scattered dots/particles around rings
+  const ringParticles = useMemo(() => {
+    const particles: { position: THREE.Vector3; size: number }[] = [];
+    
+    rings.forEach(ring => {
+      const numParticles = 20;
+      for (let i = 0; i < numParticles; i++) {
+        const angle = (i / numParticles) * Math.PI * 2 + Math.random() * 0.5;
+        const radiusOffset = (Math.random() - 0.5) * 0.3;
+        const r = ring.radius + radiusOffset;
+        
+        const x = Math.cos(angle) * r;
+        const y = (Math.random() - 0.5) * 0.2;
+        const z = Math.sin(angle) * r;
+        
+        particles.push({
+          position: new THREE.Vector3(x, y, z),
+          size: 0.02 + Math.random() * 0.03
+        });
+      }
     });
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    return geometry;
-  }, [points, connections]);
+    
+    return particles;
+  }, [rings]);
   
   // Smooth rotation animation with mouse parallax
   useFrame((state) => {
     if (groupRef.current) {
-      targetRotation.current.x = mousePosition.y * 0.2;
-      targetRotation.current.y = mousePosition.x * 0.3;
+      targetRotation.current.x = mousePosition.y * 0.3;
+      targetRotation.current.y = mousePosition.x * 0.4;
       
       groupRef.current.rotation.x += (targetRotation.current.x - groupRef.current.rotation.x) * 0.03;
       groupRef.current.rotation.y += (targetRotation.current.y - groupRef.current.rotation.y) * 0.03;
-      groupRef.current.rotation.y += 0.002;
+      groupRef.current.rotation.y += 0.003;
     }
     
-    if (glowRef.current) {
-      glowRef.current.rotation.y += 0.001;
-      const pulse = Math.sin(state.clock.elapsedTime * 0.5) * 0.1 + 1;
-      glowRef.current.scale.setScalar(pulse);
+    if (earthRef.current) {
+      earthRef.current.rotation.y += 0.002;
     }
   });
   
   return (
-    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
+    <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.2}>
       <group ref={groupRef}>
-        {/* Inner glow sphere */}
-        <mesh ref={glowRef}>
-          <sphereGeometry args={[1.5, 32, 32]} />
-          <meshBasicMaterial
-            color="#1e90ff"
-            transparent
-            opacity={0.15}
+        {/* Main Earth sphere - gradient from blue to brown/tan */}
+        <mesh ref={earthRef}>
+          <sphereGeometry args={[1.6, 64, 64]} />
+          <meshStandardMaterial
+            color="#2a5a8a"
+            metalness={0.3}
+            roughness={0.7}
           />
         </mesh>
         
-        {/* Core glow */}
+        {/* Earth gradient overlay - upper half lighter */}
         <mesh>
-          <sphereGeometry args={[0.5, 16, 16]} />
+          <sphereGeometry args={[1.61, 64, 64]} />
+          <shaderMaterial
+            transparent
+            uniforms={{
+              colorTop: { value: new THREE.Color('#8b7355') },
+              colorBottom: { value: new THREE.Color('#1a4a6e') },
+            }}
+            vertexShader={`
+              varying vec3 vPosition;
+              void main() {
+                vPosition = position;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
+            `}
+            fragmentShader={`
+              uniform vec3 colorTop;
+              uniform vec3 colorBottom;
+              varying vec3 vPosition;
+              void main() {
+                float gradient = (vPosition.y + 1.6) / 3.2;
+                vec3 color = mix(colorBottom, colorTop, gradient);
+                gl_FragColor = vec4(color, 0.6);
+              }
+            `}
+          />
+        </mesh>
+        
+        {/* Atmospheric glow */}
+        <mesh>
+          <sphereGeometry args={[1.75, 32, 32]} />
+          <meshBasicMaterial
+            color="#4a7ca8"
+            transparent
+            opacity={0.1}
+          />
+        </mesh>
+        
+        {/* Orbital rings with holes/segments */}
+        {rings.map((ring, index) => (
+          <group key={index} rotation={ring.rotation as [number, number, number]}>
+            {/* Main ring */}
+            <mesh>
+              <torusGeometry args={[ring.radius, ring.thickness, 16, 100]} />
+              <meshStandardMaterial
+                color={ring.color}
+                metalness={0.4}
+                roughness={0.3}
+                transparent
+                opacity={ring.opacity}
+              />
+            </mesh>
+            
+            {/* Ring holes/cutouts - small dark spheres to create hole effect */}
+            {Array.from({ length: 8 + index * 2 }).map((_, i) => {
+              const angle = (i / (8 + index * 2)) * Math.PI * 2;
+              const x = Math.cos(angle) * ring.radius;
+              const z = Math.sin(angle) * ring.radius;
+              return (
+                <mesh key={i} position={[x, 0, z]}>
+                  <sphereGeometry args={[ring.thickness * 1.5, 8, 8]} />
+                  <meshBasicMaterial color="#0a1628" />
+                </mesh>
+              );
+            })}
+          </group>
+        ))}
+        
+        {/* Scattered particles around rings */}
+        {ringParticles.map((particle, i) => (
+          <mesh key={i} position={particle.position}>
+            <sphereGeometry args={[particle.size, 6, 6]} />
+            <meshBasicMaterial color="#f5ebe0" transparent opacity={0.7} />
+          </mesh>
+        ))}
+        
+        {/* Inner glow core */}
+        <mesh>
+          <sphereGeometry args={[0.3, 16, 16]} />
           <meshBasicMaterial
             color="#60a5fa"
             transparent
-            opacity={0.8}
-          />
-        </mesh>
-        
-        {/* Connection lines */}
-        <lineSegments geometry={lineGeometry}>
-          <lineBasicMaterial
-            color="#3b82f6"
-            transparent
             opacity={0.4}
           />
-        </lineSegments>
-        
-        {/* Nodes - bright glowing points */}
-        {points.map((point, i) => (
-          <mesh key={i} position={point}>
-            <sphereGeometry args={[0.035, 8, 8]} />
-            <meshBasicMaterial color="#ffffff" />
-          </mesh>
-        ))}
-        
-        {/* Larger glowing nodes at key positions */}
-        {points.filter((_, i) => i % 8 === 0).map((point, i) => (
-          <mesh key={`glow-${i}`} position={point}>
-            <sphereGeometry args={[0.06, 8, 8]} />
-            <meshBasicMaterial color="#60a5fa" transparent opacity={0.9} />
-          </mesh>
-        ))}
-        
-        {/* Orbital ring 1 */}
-        <mesh rotation={[Math.PI / 6, 0, Math.PI / 12]}>
-          <torusGeometry args={[2.8, 0.015, 16, 100, Math.PI * 1.3]} />
-          <meshBasicMaterial color="#3b82f6" transparent opacity={0.6} />
-        </mesh>
-        
-        {/* Orbital ring 2 */}
-        <mesh rotation={[-Math.PI / 4, Math.PI / 3, 0]}>
-          <torusGeometry args={[2.6, 0.012, 16, 100, Math.PI * 0.8]} />
-          <meshBasicMaterial color="#60a5fa" transparent opacity={0.4} />
         </mesh>
       </group>
       
-      {/* Base glow effect */}
-      <mesh position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[1.8, 32]} />
-        <meshBasicMaterial
-          color="#1e90ff"
-          transparent
-          opacity={0.2}
-        />
-      </mesh>
-      
-      {/* Base glow ring */}
-      <mesh position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[1.5, 2.2, 64]} />
-        <meshBasicMaterial
-          color="#3b82f6"
-          transparent
-          opacity={0.15}
-        />
-      </mesh>
+      {/* Floating stars/particles in background */}
+      {Array.from({ length: 30 }).map((_, i) => {
+        const x = (Math.random() - 0.5) * 12;
+        const y = (Math.random() - 0.5) * 12;
+        const z = (Math.random() - 0.5) * 8 - 4;
+        return (
+          <mesh key={i} position={[x, y, z]}>
+            <sphereGeometry args={[0.02 + Math.random() * 0.02, 6, 6]} />
+            <meshBasicMaterial color="#ffffff" transparent opacity={0.4 + Math.random() * 0.4} />
+          </mesh>
+        );
+      })}
     </Float>
   );
 };
@@ -187,15 +204,16 @@ const NeuralNetwork3D = () => {
   return (
     <div ref={containerRef} className="w-full h-full min-h-[300px] lg:min-h-[420px]">
       <Canvas
-        camera={{ position: [0, 0, 7], fov: 45 }}
+        camera={{ position: [0, 0, 8], fov: 45 }}
         style={{ background: 'transparent' }}
         gl={{ alpha: true, antialias: true }}
         dpr={[1, 2]}
       >
-        <ambientLight intensity={0.3} />
-        <pointLight position={[0, 0, 0]} intensity={2} color="#60a5fa" />
-        <pointLight position={[5, 5, 5]} intensity={0.5} color="#ffffff" />
-        <NetworkMesh mousePosition={mousePosition} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 5, 5]} intensity={0.8} color="#ffffff" />
+        <directionalLight position={[-5, -5, -5]} intensity={0.3} color="#4a7ca8" />
+        <pointLight position={[0, 0, 3]} intensity={0.5} color="#60a5fa" />
+        <EarthMesh mousePosition={mousePosition} />
       </Canvas>
     </div>
   );

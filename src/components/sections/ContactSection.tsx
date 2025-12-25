@@ -29,8 +29,8 @@ const ContactSection = () => {
     {
       icon: Mail,
       label: 'Email',
-      value: 'ronaldritchbabu@gmail.com',
-      href: 'mailto:ronaldritchbabu@gmail.com',
+      value: 'ronaldmanapuzha@gmail.com',
+      href: 'mailto:ronaldmanapuzha@gmail.com',
     },
     {
       icon: Linkedin,
@@ -104,7 +104,7 @@ const ContactSection = () => {
               or just want to connect — I'd love to hear from you!
             </p>
             <a
-              href="mailto:ronaldritchbabu@gmail.com"
+              href="mailto:ronaldmanapuzha@gmail.com"
               className="btn-neon-filled inline-flex items-center gap-2"
             >
               <Send size={18} />
