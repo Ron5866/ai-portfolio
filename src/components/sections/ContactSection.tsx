@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Mail, Linkedin, Github, MapPin, Send } from 'lucide-react';
 import AnimatedCard from '../AnimatedCard';
 import AnimatedButton from '../AnimatedButton';
+import RibbonGlobe from '../RibbonGlobe';
 
 const ContactSection = () => {
   const contactLinks = [
@@ -54,45 +55,61 @@ const ContactSection = () => {
           </motion.p>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {contactLinks.map((link, index) => (
-              <AnimatedCard
-                key={link.label}
-                className="glass-card p-6 text-center group cursor-pointer"
-                delay={index * 0.1}
-                hoverScale={1.05}
-              >
-                <a href={link.href} target={link.label !== 'Email' ? '_blank' : undefined} rel={link.label !== 'Email' ? 'noopener noreferrer' : undefined} className="block">
-                  <motion.div 
-                    className="inline-flex p-4 rounded-xl bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
-                    whileHover={{ rotate: 10 }}
-                  >
-                    <link.icon size={28} />
-                  </motion.div>
-                  <h3 className="font-semibold mb-1">{link.label}</h3>
-                  <p className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">{link.value}</p>
-                </a>
-              </AnimatedCard>
-            ))}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left side - Contact content */}
+          <div className="max-w-xl">
+            <div className="grid sm:grid-cols-3 gap-6 mb-12">
+              {contactLinks.map((link, index) => (
+                <AnimatedCard
+                  key={link.label}
+                  className="glass-card p-6 text-center group cursor-pointer"
+                  delay={index * 0.1}
+                  hoverScale={1.05}
+                >
+                  <a href={link.href} target={link.label !== 'Email' ? '_blank' : undefined} rel={link.label !== 'Email' ? 'noopener noreferrer' : undefined} className="block">
+                    <motion.div 
+                      className="inline-flex p-4 rounded-xl bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
+                      whileHover={{ rotate: 10 }}
+                    >
+                      <link.icon size={28} />
+                    </motion.div>
+                    <h3 className="font-semibold mb-1">{link.label}</h3>
+                    <p className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">{link.value}</p>
+                  </a>
+                </AnimatedCard>
+              ))}
+            </div>
+
+            <AnimatedCard className="glass-card p-8 md:p-12 text-center" delay={0.4}>
+              <div className="flex items-center justify-center gap-2 text-primary mb-4">
+                <MapPin size={20} />
+                <span className="text-sm">India</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-display font-bold mb-4">
+                Let's Build Something <span className="gradient-text">Amazing</span>
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                Whether you have a project in mind, want to collaborate on AI research, or just want to connect — I'd love to hear from you!
+              </p>
+              <AnimatedButton asLink href="mailto:ronaldmanapuzha@gmail.com" className="btn-neon-filled inline-flex items-center gap-2">
+                <Send size={18} />
+                Send a Message
+              </AnimatedButton>
+            </AnimatedCard>
           </div>
 
-          <AnimatedCard className="glass-card p-8 md:p-12 text-center" delay={0.4}>
-            <div className="flex items-center justify-center gap-2 text-primary mb-4">
-              <MapPin size={20} />
-              <span className="text-sm">India</span>
+          {/* Right side - Ribbon Globe */}
+          <motion.div 
+            className="hidden lg:flex items-center justify-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="w-full max-w-md aspect-square">
+              <RibbonGlobe />
             </div>
-            <h3 className="text-2xl md:text-3xl font-display font-bold mb-4">
-              Let's Build Something <span className="gradient-text">Amazing</span>
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              Whether you have a project in mind, want to collaborate on AI research, or just want to connect — I'd love to hear from you!
-            </p>
-            <AnimatedButton asLink href="mailto:ronaldmanapuzha@gmail.com" className="btn-neon-filled inline-flex items-center gap-2">
-              <Send size={18} />
-              Send a Message
-            </AnimatedButton>
-          </AnimatedCard>
+          </motion.div>
         </div>
       </div>
     </section>
