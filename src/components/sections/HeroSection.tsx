@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Github, Download, ArrowRight } from 'lucide-react';
 import TypingEffect from '../TypingEffect';
-import MorphingBlob from '../MorphingBlob';
+import DNAHelix from '../DNAHelix';
 import AnimatedButton from '../AnimatedButton';
 
 const HeroSection = () => {
@@ -162,8 +162,8 @@ const HeroSection = () => {
                 }}
               />
               
-              {/* 3D Morphing Blob */}
-              <MorphingBlob />
+              {/* 3D DNA Helix */}
+              <DNAHelix />
             </div>
           </motion.div>
         </div>
