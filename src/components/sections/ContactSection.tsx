@@ -74,7 +74,7 @@ const ContactSection = () => {
                       <link.icon size={28} />
                     </motion.div>
                     <h3 className="font-semibold mb-1">{link.label}</h3>
-                    <p className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">{link.value}</p>
+                    <p className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300 truncate max-w-full break-all">{link.value}</p>
                   </a>
                 </AnimatedCard>
               ))}
