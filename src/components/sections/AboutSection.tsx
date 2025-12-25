@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Code, Smartphone, Server } from 'lucide-react';
+import { AnimatedIconWrapper } from '../AnimatedIcon';
 
 const services = [
   { icon: Code, label: 'AI Development' },
@@ -14,79 +15,131 @@ const stats = [
 ];
 
 const AboutSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.scroll-fade-up, .scroll-fade-left, .scroll-fade-right').forEach((el) => {
-              el.classList.add('visible');
-            });
-          }
-        });
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
       },
-      { threshold: 0.1 }
-    );
+    },
+  };
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
 
-    return () => observer.disconnect();
-  }, []);
+  const leftItemVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
 
   return (
-    <section id="about" className="py-24 relative" ref={sectionRef}>
+    <section id="about" className="py-24 relative">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left - Services */}
-          <div className="space-y-6">
+          <motion.div 
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+          >
             {services.map((service, index) => (
-              <div
+              <motion.div
                 key={service.label}
-                className="scroll-fade-left flex items-center gap-4 group"
-                style={{ transitionDelay: `${index * 100}ms` }}
+                variants={leftItemVariants}
+                custom={index}
+                className="flex items-center gap-4 group"
               >
-                <div className="p-3 rounded-lg border border-border group-hover:border-primary transition-colors">
-                  <service.icon size={24} className="text-muted-foreground group-hover:text-primary transition-colors" />
-                </div>
-                <span className="text-lg font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                <motion.div 
+                  className="p-3 rounded-lg border border-border group-hover:border-primary transition-colors duration-300"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <AnimatedIconWrapper>
+                    <service.icon size={24} className="text-muted-foreground group-hover:text-primary transition-colors duration-300" />
+                  </AnimatedIconWrapper>
+                </motion.div>
+                <span className="text-lg font-medium text-muted-foreground group-hover:text-foreground transition-colors duration-300">
                   {service.label}
                 </span>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Right - About Content */}
-          <div className="space-y-8">
+          <motion.div 
+            className="space-y-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+          >
             <div>
-              <h2 className="scroll-fade-up text-3xl md:text-4xl font-display font-bold mb-6">
+              <motion.h2 
+                variants={itemVariants}
+                className="text-3xl md:text-4xl font-display font-bold mb-6"
+              >
                 About me
-              </h2>
-              <p className="scroll-fade-up delay-100 text-muted-foreground leading-relaxed">
+              </motion.h2>
+              <motion.p 
+                variants={itemVariants}
+                className="text-muted-foreground leading-relaxed"
+              >
                 I'm a Computer Science and Engineering student specializing in Artificial Intelligence 
                 at Parul University. I'm passionate about developing AI solutions that address real-world 
                 challenges. My focus areas include Machine Learning, Deep Learning, and Large Language Models, 
                 with a growing interest in RAG systems.
-              </p>
+              </motion.p>
             </div>
 
             {/* Stats */}
-            <div className="scroll-fade-up delay-200 grid grid-cols-3 gap-6">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
+            <motion.div 
+              variants={itemVariants}
+              className="grid grid-cols-3 gap-6"
+            >
+              {stats.map((stat, index) => (
+                <motion.div 
+                  key={stat.label} 
+                  className="text-center"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ 
+                    delay: 0.3 + index * 0.1,
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                >
                   <div className="text-3xl md:text-4xl font-display font-bold text-primary">
                     {stat.value}<span className="text-accent">+</span>
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
                     {stat.label}
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
