@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Award, ExternalLink } from 'lucide-react';
+import AnimatedCard from '../AnimatedCard';
 
 interface Certification {
   title: string;
@@ -8,93 +9,65 @@ interface Certification {
 }
 
 const certifications: Certification[] = [
-  {
-    title: 'Python for Data Science',
-    issuer: 'IBM',
-    icon: '🐍',
-  },
-  {
-    title: 'Generative AI Fundamentals',
-    issuer: 'Google Cloud / Coursera',
-    icon: '🤖',
-  },
-  {
-    title: 'Machine Learning',
-    issuer: 'Stanford / Coursera',
-    icon: '🧠',
-  },
-  {
-    title: 'Deep Learning Specialization',
-    issuer: 'deeplearning.ai',
-    icon: '🔬',
-  },
+  { title: 'Python for Data Science', issuer: 'IBM', icon: '🐍' },
+  { title: 'Generative AI Fundamentals', issuer: 'Google Cloud / Coursera', icon: '🤖' },
+  { title: 'Machine Learning', issuer: 'Stanford / Coursera', icon: '🧠' },
+  { title: 'Deep Learning Specialization', issuer: 'deeplearning.ai', icon: '🔬' },
 ];
 
 const CertificationsSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.scroll-fade-up').forEach((el) => {
-              el.classList.add('visible');
-            });
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section className="py-24 relative" ref={sectionRef}>
+    <section className="py-24 relative">
       <div className="container mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="scroll-fade-up text-3xl md:text-4xl font-display font-bold mb-4">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
             <span className="gradient-text">Certifications</span>
           </h2>
-          <div className="scroll-fade-up delay-100 w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
-        </div>
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full origin-center" 
+          />
+        </motion.div>
 
-        {/* Certifications Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {certifications.map((cert, index) => (
-            <div
+            <AnimatedCard
               key={cert.title}
-              className="scroll-fade-up glass-card p-6 text-center group hover:scale-105 transition-all duration-300"
-              style={{ transitionDelay: `${index * 100}ms` }}
+              className="glass-card p-6 text-center group"
+              delay={index * 0.1}
+              hoverScale={1.05}
             >
-              {/* Icon */}
-              <div className="text-4xl mb-4">{cert.icon}</div>
-
-              {/* Award icon */}
+              <motion.div 
+                className="text-4xl mb-4"
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                transition={{ duration: 0.2 }}
+              >
+                {cert.icon}
+              </motion.div>
               <div className="inline-flex p-2 rounded-lg bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                 <Award size={20} />
               </div>
-
-              {/* Title */}
               <h3 className="font-semibold text-sm mb-2 min-h-[40px] flex items-center justify-center">
                 {cert.title}
               </h3>
-
-              {/* Issuer */}
               <p className="text-xs text-muted-foreground">{cert.issuer}</p>
-
-              {/* View link */}
-              <button className="mt-4 text-xs text-primary flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mx-auto">
+              <motion.button 
+                className="mt-4 text-xs text-primary flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mx-auto"
+                whileHover={{ scale: 1.05 }}
+              >
                 <ExternalLink size={12} />
                 View Certificate
-              </button>
-            </div>
+              </motion.button>
+            </AnimatedCard>
           ))}
         </div>
       </div>
