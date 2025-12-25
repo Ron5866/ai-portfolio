@@ -42,13 +42,13 @@ const Navigation = () => {
           {/* Logo */}
           <a
             href="#"
-            className="font-display text-xl md:text-2xl font-semibold text-foreground"
+            className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-lg bg-primary text-primary-foreground font-display text-xl md:text-2xl font-bold hover:scale-105 transition-transform duration-300"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
-            Ronald Ritch<span className="text-primary">.</span>
+            R
           </a>
 
           {/* Desktop Navigation */}
