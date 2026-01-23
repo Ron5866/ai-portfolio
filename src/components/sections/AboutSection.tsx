@@ -11,7 +11,6 @@ const services = [
 const stats = [
   { value: '5+', label: 'Completed Projects' },
   { value: '8.2', label: 'CGPA' },
-  { value: '2+', label: 'Years of Experience' },
 ];
 
 const AboutSection = () => {
