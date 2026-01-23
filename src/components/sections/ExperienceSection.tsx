@@ -25,19 +25,6 @@ const experiences: Experience[] = [
     ],
     type: 'Internship',
   },
-  {
-    title: 'Data Analytics Virtual Intern',
-    company: 'Deloitte',
-    duration: '2024',
-    location: 'Virtual',
-    description: [
-      'Completed virtual internship program focused on data analytics',
-      'Gained hands-on experience with data visualization tools',
-      'Analyzed business datasets to derive actionable insights',
-      'Developed reports and dashboards for stakeholder presentations',
-    ],
-    type: 'Virtual Internship',
-  },
 ];
 
 const ExperienceSection = () => {
