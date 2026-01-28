@@ -51,32 +51,31 @@ const ParticleBackground = () => {
     };
 
     const drawGrid = () => {
-      const gridSize = 60;
+      const gridSize = 80;
       const mouseX = mouseRef.current.x;
       const mouseY = mouseRef.current.y;
       
-      ctx.strokeStyle = 'hsla(210, 100%, 50%, 0.03)';
-      ctx.lineWidth = 1;
-      
-      // Draw vertical lines
+      // Draw subtle vertical lines
       for (let x = 0; x < canvas.width; x += gridSize) {
         const distToMouse = Math.abs(x - mouseX);
-        const intensity = Math.max(0, 1 - distToMouse / 300);
+        const intensity = Math.max(0, 1 - distToMouse / 400);
         
         ctx.beginPath();
-        ctx.strokeStyle = `hsla(210, 100%, 60%, ${0.03 + intensity * 0.15})`;
+        ctx.strokeStyle = `hsla(210, 80%, 40%, ${0.015 + intensity * 0.04})`;
+        ctx.lineWidth = 0.5;
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
         ctx.stroke();
       }
       
-      // Draw horizontal lines
+      // Draw subtle horizontal lines
       for (let y = 0; y < canvas.height; y += gridSize) {
         const distToMouse = Math.abs(y - mouseY);
-        const intensity = Math.max(0, 1 - distToMouse / 300);
+        const intensity = Math.max(0, 1 - distToMouse / 400);
         
         ctx.beginPath();
-        ctx.strokeStyle = `hsla(210, 100%, 60%, ${0.03 + intensity * 0.15})`;
+        ctx.strokeStyle = `hsla(210, 80%, 40%, ${0.015 + intensity * 0.04})`;
+        ctx.lineWidth = 0.5;
         ctx.moveTo(0, y);
         ctx.lineTo(canvas.width, y);
         ctx.stroke();
@@ -89,27 +88,14 @@ const ParticleBackground = () => {
       
       if (mouseX < 0 || mouseY < 0) return;
       
-      // Outer glow
-      const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 250);
-      gradient.addColorStop(0, 'hsla(200, 100%, 60%, 0.15)');
-      gradient.addColorStop(0.3, 'hsla(220, 100%, 50%, 0.08)');
-      gradient.addColorStop(0.6, 'hsla(260, 100%, 60%, 0.04)');
-      gradient.addColorStop(1, 'hsla(260, 100%, 60%, 0)');
+      // Soft outer glow
+      const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 200);
+      gradient.addColorStop(0, 'hsla(200, 80%, 50%, 0.06)');
+      gradient.addColorStop(0.4, 'hsla(220, 70%, 45%, 0.03)');
+      gradient.addColorStop(1, 'hsla(220, 70%, 45%, 0)');
       
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Inner pulse glow
-      const pulseSize = 80 + Math.sin(timeRef.current * 0.05) * 20;
-      const innerGradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, pulseSize);
-      innerGradient.addColorStop(0, 'hsla(195, 100%, 70%, 0.25)');
-      innerGradient.addColorStop(0.5, 'hsla(220, 100%, 60%, 0.1)');
-      innerGradient.addColorStop(1, 'hsla(220, 100%, 60%, 0)');
-      
-      ctx.fillStyle = innerGradient;
-      ctx.beginPath();
-      ctx.arc(mouseX, mouseY, pulseSize, 0, Math.PI * 2);
-      ctx.fill();
     };
 
     const drawParticles = () => {
@@ -155,104 +141,47 @@ const ParticleBackground = () => {
         if (particle.y > canvas.height) particle.y = 0;
 
         // Calculate glow intensity based on mouse proximity
-        const mouseGlowIntensity = Math.max(0, 1 - distance / 250);
-        const glowSize = particle.size + mouseGlowIntensity * 4;
-        
-        // Draw particle glow
-        if (mouseGlowIntensity > 0) {
-          const particleGlow = ctx.createRadialGradient(
-            particle.x, particle.y, 0,
-            particle.x, particle.y, glowSize * 3
-          );
-          particleGlow.addColorStop(0, `hsla(195, 100%, 70%, ${mouseGlowIntensity * 0.5})`);
-          particleGlow.addColorStop(1, 'hsla(195, 100%, 70%, 0)');
-          ctx.fillStyle = particleGlow;
-          ctx.beginPath();
-          ctx.arc(particle.x, particle.y, glowSize * 3, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        const mouseGlowIntensity = Math.max(0, 1 - distance / 200);
+        const glowSize = particle.size + mouseGlowIntensity * 2;
 
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, glowSize, 0, Math.PI * 2);
-        const hue = 195 + mouseGlowIntensity * 30;
-        const lightness = 50 + mouseGlowIntensity * 20;
-        ctx.fillStyle = `hsla(${hue}, 100%, ${lightness}%, ${particle.opacity + mouseGlowIntensity * 0.3})`;
+        const hue = 200 + mouseGlowIntensity * 15;
+        ctx.fillStyle = `hsla(${hue}, 70%, 55%, ${particle.opacity * 0.6 + mouseGlowIntensity * 0.2})`;
         ctx.fill();
 
-        // Draw connections between particles
+        // Draw subtle connections between particles
         particlesRef.current.slice(i + 1).forEach((otherParticle) => {
           const pdx = particle.x - otherParticle.x;
           const pdy = particle.y - otherParticle.y;
           const pDistance = Math.sqrt(pdx * pdx + pdy * pdy);
 
-          if (pDistance < 150) {
-            const lineOpacity = 0.2 * (1 - pDistance / 150);
+          if (pDistance < 120) {
+            const lineOpacity = 0.08 * (1 - pDistance / 120);
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `hsla(200, 100%, 60%, ${lineOpacity})`;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `hsla(200, 60%, 50%, ${lineOpacity})`;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         });
 
-        // Draw lines to mouse cursor with enhanced visibility
-        if (distance < 200 && mouseX > 0) {
-          const lineOpacity = 0.6 * (1 - distance / 200);
+        // Draw subtle lines to mouse cursor
+        if (distance < 150 && mouseX > 0) {
+          const lineOpacity = 0.2 * (1 - distance / 150);
           
-          // Draw glowing line to mouse
           ctx.beginPath();
           ctx.moveTo(particle.x, particle.y);
           ctx.lineTo(mouseX, mouseY);
-          
-          // Create gradient for the line
-          const lineGradient = ctx.createLinearGradient(particle.x, particle.y, mouseX, mouseY);
-          lineGradient.addColorStop(0, `hsla(195, 100%, 70%, ${lineOpacity})`);
-          lineGradient.addColorStop(1, `hsla(280, 100%, 70%, ${lineOpacity * 0.8})`);
-          
-          ctx.strokeStyle = lineGradient;
-          ctx.lineWidth = 1.5 + (1 - distance / 200) * 1.5;
+          ctx.strokeStyle = `hsla(200, 70%, 55%, ${lineOpacity})`;
+          ctx.lineWidth = 0.8;
           ctx.stroke();
         }
       });
 
-      // Draw hex pattern near mouse
-      if (mouseX > 0 && mouseY > 0) {
-        drawHexPattern(mouseX, mouseY);
-      }
-
       animationRef.current = requestAnimationFrame(drawParticles);
-    };
-
-    const drawHexPattern = (centerX: number, centerY: number) => {
-      const hexRadius = 30;
-      const rings = 3;
-      
-      for (let ring = 1; ring <= rings; ring++) {
-        const distance = ring * hexRadius * 1.8;
-        const opacity = (1 - ring / (rings + 1)) * 0.15;
-        
-        for (let i = 0; i < 6; i++) {
-          const angle = (i / 6) * Math.PI * 2 + timeRef.current * 0.01;
-          const x = centerX + Math.cos(angle) * distance;
-          const y = centerY + Math.sin(angle) * distance;
-          
-          // Draw small hexagon
-          ctx.beginPath();
-          for (let j = 0; j < 6; j++) {
-            const hAngle = (j / 6) * Math.PI * 2;
-            const hx = x + Math.cos(hAngle) * (hexRadius / 2);
-            const hy = y + Math.sin(hAngle) * (hexRadius / 2);
-            if (j === 0) ctx.moveTo(hx, hy);
-            else ctx.lineTo(hx, hy);
-          }
-          ctx.closePath();
-          ctx.strokeStyle = `hsla(200, 100%, 60%, ${opacity})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
