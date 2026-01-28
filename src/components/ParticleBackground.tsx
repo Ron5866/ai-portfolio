@@ -31,7 +31,8 @@ const ParticleBackground = () => {
     };
 
     const createParticles = () => {
-      const particleCount = Math.min(120, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+      // More particles for denser web
+      const particleCount = Math.min(150, Math.floor((window.innerWidth * window.innerHeight) / 8000));
       particlesRef.current = [];
       
       for (let i = 0; i < particleCount; i++) {
@@ -42,97 +43,74 @@ const ParticleBackground = () => {
           y,
           baseX: x,
           baseY: y,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          size: Math.random() * 2.5 + 1,
-          opacity: Math.random() * 0.6 + 0.3,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          size: Math.random() * 1.5 + 0.5,
+          opacity: Math.random() * 0.4 + 0.2,
         });
       }
-    };
-
-    const drawGrid = () => {
-      const gridSize = 80;
-      const mouseX = mouseRef.current.x;
-      const mouseY = mouseRef.current.y;
-      
-      // Draw subtle vertical lines
-      for (let x = 0; x < canvas.width; x += gridSize) {
-        const distToMouse = Math.abs(x - mouseX);
-        const intensity = Math.max(0, 1 - distToMouse / 400);
-        
-        ctx.beginPath();
-        ctx.strokeStyle = `hsla(210, 80%, 40%, ${0.015 + intensity * 0.04})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      
-      // Draw subtle horizontal lines
-      for (let y = 0; y < canvas.height; y += gridSize) {
-        const distToMouse = Math.abs(y - mouseY);
-        const intensity = Math.max(0, 1 - distToMouse / 400);
-        
-        ctx.beginPath();
-        ctx.strokeStyle = `hsla(210, 80%, 40%, ${0.015 + intensity * 0.04})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-    };
-
-    const drawMouseGlow = () => {
-      const mouseX = mouseRef.current.x;
-      const mouseY = mouseRef.current.y;
-      
-      if (mouseX < 0 || mouseY < 0) return;
-      
-      // Soft outer glow
-      const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 200);
-      gradient.addColorStop(0, 'hsla(200, 80%, 50%, 0.06)');
-      gradient.addColorStop(0.4, 'hsla(220, 70%, 45%, 0.03)');
-      gradient.addColorStop(1, 'hsla(220, 70%, 45%, 0)');
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
     const drawParticles = () => {
       timeRef.current += 1;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw grid first
-      drawGrid();
-      
-      // Draw mouse glow
-      drawMouseGlow();
 
       const mouseX = mouseRef.current.x;
       const mouseY = mouseRef.current.y;
 
+      // First pass: draw all web connections
       particlesRef.current.forEach((particle, i) => {
-        // Mouse repulsion/attraction effect
+        particlesRef.current.slice(i + 1).forEach((otherParticle) => {
+          const pdx = particle.x - otherParticle.x;
+          const pdy = particle.y - otherParticle.y;
+          const pDistance = Math.sqrt(pdx * pdx + pdy * pdy);
+
+          // Longer connection distance for web effect
+          if (pDistance < 180) {
+            // Check if line is near mouse for highlight effect
+            const midX = (particle.x + otherParticle.x) / 2;
+            const midY = (particle.y + otherParticle.y) / 2;
+            const mouseDistToLine = Math.sqrt((midX - mouseX) ** 2 + (midY - mouseY) ** 2);
+            const mouseHighlight = mouseX > 0 ? Math.max(0, 1 - mouseDistToLine / 200) : 0;
+            
+            const baseOpacity = 0.06 * (1 - pDistance / 180);
+            const lineOpacity = baseOpacity + mouseHighlight * 0.12;
+            
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(otherParticle.x, otherParticle.y);
+            
+            const hue = 200 + mouseHighlight * 20;
+            const lightness = 50 + mouseHighlight * 15;
+            ctx.strokeStyle = `hsla(${hue}, 50%, ${lightness}%, ${lineOpacity})`;
+            ctx.lineWidth = 0.3 + mouseHighlight * 0.4;
+            ctx.stroke();
+          }
+        });
+      });
+
+      // Second pass: update positions and draw particles
+      particlesRef.current.forEach((particle, i) => {
+        // Mouse interaction - subtle push effect
         const dx = particle.x - mouseX;
         const dy = particle.y - mouseY;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const maxDistance = 200;
+        const maxDistance = 120;
         
         if (distance < maxDistance && mouseX > 0) {
           const force = (maxDistance - distance) / maxDistance;
           const angle = Math.atan2(dy, dx);
-          // Push particles away from mouse
-          particle.x += Math.cos(angle) * force * 3;
-          particle.y += Math.sin(angle) * force * 3;
+          particle.x += Math.cos(angle) * force * 1.5;
+          particle.y += Math.sin(angle) * force * 1.5;
         } else {
-          // Return to base position slowly
-          particle.x += (particle.baseX - particle.x) * 0.02;
-          particle.y += (particle.baseY - particle.y) * 0.02;
+          // Slow drift back to base
+          particle.x += (particle.baseX - particle.x) * 0.01;
+          particle.y += (particle.baseY - particle.y) * 0.01;
         }
 
-        // Add gentle floating motion
-        particle.x += particle.vx + Math.sin(timeRef.current * 0.02 + i) * 0.2;
-        particle.y += particle.vy + Math.cos(timeRef.current * 0.02 + i) * 0.2;
+        // Gentle floating motion
+        particle.x += particle.vx + Math.sin(timeRef.current * 0.015 + i * 0.5) * 0.1;
+        particle.y += particle.vy + Math.cos(timeRef.current * 0.015 + i * 0.5) * 0.1;
 
         // Wrap around edges
         if (particle.x < 0) particle.x = canvas.width;
@@ -140,46 +118,29 @@ const ParticleBackground = () => {
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
 
-        // Calculate glow intensity based on mouse proximity
-        const mouseGlowIntensity = Math.max(0, 1 - distance / 200);
-        const glowSize = particle.size + mouseGlowIntensity * 2;
+        // Mouse proximity glow
+        const mouseGlowIntensity = Math.max(0, 1 - distance / 150);
+        const dotSize = particle.size + mouseGlowIntensity * 1;
+        const dotOpacity = particle.opacity + mouseGlowIntensity * 0.3;
 
-        // Draw particle
+        // Draw dot
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, glowSize, 0, Math.PI * 2);
-        const hue = 200 + mouseGlowIntensity * 15;
-        ctx.fillStyle = `hsla(${hue}, 70%, 55%, ${particle.opacity * 0.6 + mouseGlowIntensity * 0.2})`;
+        ctx.arc(particle.x, particle.y, dotSize, 0, Math.PI * 2);
+        const hue = 200 + mouseGlowIntensity * 20;
+        ctx.fillStyle = `hsla(${hue}, 60%, 55%, ${dotOpacity})`;
         ctx.fill();
-
-        // Draw subtle connections between particles
-        particlesRef.current.slice(i + 1).forEach((otherParticle) => {
-          const pdx = particle.x - otherParticle.x;
-          const pdy = particle.y - otherParticle.y;
-          const pDistance = Math.sqrt(pdx * pdx + pdy * pdy);
-
-          if (pDistance < 120) {
-            const lineOpacity = 0.08 * (1 - pDistance / 120);
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `hsla(200, 60%, 50%, ${lineOpacity})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-
-        // Draw subtle lines to mouse cursor
-        if (distance < 150 && mouseX > 0) {
-          const lineOpacity = 0.2 * (1 - distance / 150);
-          
-          ctx.beginPath();
-          ctx.moveTo(particle.x, particle.y);
-          ctx.lineTo(mouseX, mouseY);
-          ctx.strokeStyle = `hsla(200, 70%, 55%, ${lineOpacity})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
       });
+
+      // Draw subtle mouse glow
+      if (mouseX > 0 && mouseY > 0) {
+        const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 150);
+        gradient.addColorStop(0, 'hsla(200, 60%, 50%, 0.04)');
+        gradient.addColorStop(1, 'hsla(200, 60%, 50%, 0)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, 150, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
       animationRef.current = requestAnimationFrame(drawParticles);
     };
