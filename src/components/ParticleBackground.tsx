@@ -32,7 +32,7 @@ const ParticleBackground = () => {
 
     const createParticles = () => {
       // Many more particles for denser web
-      const particleCount = Math.min(320, Math.floor((window.innerWidth * window.innerHeight) / 3500));
+      const particleCount = Math.min(220, Math.floor((window.innerWidth * window.innerHeight) / 5000));
       particlesRef.current = [];
       
       for (let i = 0; i < particleCount; i++) {
@@ -41,8 +41,8 @@ const ParticleBackground = () => {
           y: Math.random() * canvas.height,
           vx: (Math.random() - 0.5) * 0.6,
           vy: (Math.random() - 0.5) * 0.6,
-          size: Math.random() * 2.5 + 1,
-          opacity: Math.random() * 0.6 + 0.35,
+          size: Math.random() * 2 + 0.8,
+          opacity: Math.random() * 0.5 + 0.25,
           pulseOffset: Math.random() * Math.PI * 2,
           speedMultiplier: Math.random() * 0.5 + 0.75,
         });
@@ -65,7 +65,7 @@ const ParticleBackground = () => {
           const pDistance = Math.sqrt(pdx * pdx + pdy * pdy);
 
           // Connection distance for web effect
-          if (pDistance < 200) {
+          if (pDistance < 160) {
             // Check if line is near mouse for highlight effect
             const midX = (particle.x + otherParticle.x) / 2;
             const midY = (particle.y + otherParticle.y) / 2;
@@ -73,9 +73,9 @@ const ParticleBackground = () => {
             const mouseHighlight = mouseX > 0 ? Math.max(0, 1 - mouseDistToLine / 180) : 0;
             
             // Pulsing opacity for animation
-            const pulse = Math.sin(time * 0.02 + particle.pulseOffset) * 0.03;
-            const baseOpacity = (0.15 + pulse) * (1 - pDistance / 200);
-            const lineOpacity = baseOpacity + mouseHighlight * 0.25;
+            const pulse = Math.sin(time * 0.02 + particle.pulseOffset) * 0.02;
+            const baseOpacity = (0.08 + pulse) * (1 - pDistance / 160);
+            const lineOpacity = baseOpacity + mouseHighlight * 0.15;
             
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -84,7 +84,7 @@ const ParticleBackground = () => {
             const hue = 200 + mouseHighlight * 25;
             const lightness = 50 + mouseHighlight * 20;
             ctx.strokeStyle = `hsla(${hue}, 55%, ${lightness}%, ${lineOpacity})`;
-            ctx.lineWidth = 0.6 + mouseHighlight * 0.8;
+            ctx.lineWidth = 0.4 + mouseHighlight * 0.6;
             ctx.stroke();
           }
         });
