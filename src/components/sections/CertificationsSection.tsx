@@ -6,12 +6,13 @@ interface Certification {
   title: string;
   issuer: string;
   icon: string;
+  link?: string;
 }
 
 const certifications: Certification[] = [
-  { title: 'Python for Data Science', issuer: 'IBM', icon: '🐍' },
-  { title: 'Generative AI Fundamentals', issuer: 'Google Cloud / Coursera', icon: '🤖' },
-  { title: 'Machine Learning', issuer: 'Stanford / Coursera', icon: '🧠' },
+  { title: 'Python for Data Science', issuer: 'IBM', icon: '🐍', link: '/certs/ibm_python.pdf' },
+  { title: 'Career Essentials in Generative AI', issuer: 'Microsoft & LinkedIn', icon: '🤖', link: '/certs/microsoft.png' },
+  { title: 'Machine Learning Specialization', issuer: 'Stanford / Coursera', icon: '🧠', link: '/certs/coursera_ml.jpeg' },
   { title: 'Deep Learning Specialization', issuer: 'deeplearning.ai', icon: '🔬' },
 ];
 
@@ -60,13 +61,18 @@ const CertificationsSection = () => {
                 {cert.title}
               </h3>
               <p className="text-xs text-muted-foreground">{cert.issuer}</p>
-              <motion.button 
-                className="mt-4 text-xs text-primary flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mx-auto"
-                whileHover={{ scale: 1.05 }}
-              >
-                <ExternalLink size={12} />
-                View Certificate
-              </motion.button>
+              {cert.link && (
+                <motion.a
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 text-xs text-primary flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mx-auto"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <ExternalLink size={12} />
+                  View Certificate
+                </motion.a>
+              )}
             </AnimatedCard>
           ))}
         </div>
