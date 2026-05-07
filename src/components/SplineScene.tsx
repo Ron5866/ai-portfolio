@@ -24,7 +24,7 @@ const SplineScene = () => {
   }, []);
 
   return (
-    <div className="w-full h-full min-h-[400px] md:min-h-[500px] overflow-hidden rounded-2xl">
+    <div className="relative w-full h-full min-h-[400px] md:min-h-[500px] overflow-hidden rounded-2xl translate-x-8 md:translate-x-16">
       <spline-viewer
         url="https://prod.spline.design/yVgYuDzwhW1S10jx/scene.splinecode"
         style={{
@@ -34,6 +34,8 @@ const SplineScene = () => {
           display: 'block',
         }}
       />
+      {/* Cover Spline watermark */}
+      <div className="absolute bottom-0 right-0 w-44 h-14 bg-background pointer-events-none" />
     </div>
   );
 };
