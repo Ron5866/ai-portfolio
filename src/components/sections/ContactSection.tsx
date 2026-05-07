@@ -107,7 +107,10 @@ const ContactSection = () => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="w-full max-w-md aspect-square">
-              <SplineScene />
+              <SplineScene
+                url="https://prod.spline.design/hYOv3CtDL8ZbKnRd/scene.splinecode"
+                className="relative w-full h-full overflow-hidden rounded-2xl"
+              />
             </div>
           </motion.div>
         </div>
