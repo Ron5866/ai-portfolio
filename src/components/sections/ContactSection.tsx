@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Mail, Linkedin, Github, MapPin, Send } from 'lucide-react';
 import AnimatedCard from '../AnimatedCard';
 import AnimatedButton from '../AnimatedButton';
-import SpiralGalaxy from '../SpiralGalaxy';
+import SplineScene from '../SplineScene';
 
 const ContactSection = () => {
   const contactLinks = [
@@ -107,7 +107,7 @@ const ContactSection = () => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="w-full max-w-md aspect-square">
-              <SpiralGalaxy />
+              <SplineScene />
             </div>
           </motion.div>
         </div>
