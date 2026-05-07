@@ -14,7 +14,15 @@ declare global {
 const SPLINE_SCRIPT_SRC =
   'https://unpkg.com/@splinetool/viewer@1.12.92/build/spline-viewer.js';
 
-const SplineScene = () => {
+interface SplineSceneProps {
+  url?: string;
+  className?: string;
+  offset?: boolean;
+}
+
+const DEFAULT_URL = 'https://prod.spline.design/yVgYuDzwhW1S10jx/scene.splinecode';
+
+const SplineScene = ({ url = DEFAULT_URL, className, offset = true }: SplineSceneProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,7 +33,6 @@ const SplineScene = () => {
       document.head.appendChild(script);
     }
 
-    // Inject global CSS to hide the Spline logo via ::part selector
     const styleId = 'spline-hide-logo-style';
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
@@ -37,7 +44,6 @@ const SplineScene = () => {
       document.head.appendChild(style);
     }
 
-    // JS fallback: remove the badge from shadow DOM once it loads
     const removeBadge = () => {
       const viewer = containerRef.current?.querySelector('spline-viewer') as HTMLElement | null;
       if (!viewer) return;
@@ -60,10 +66,13 @@ const SplineScene = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full min-h-[400px] md:min-h-[500px] overflow-hidden rounded-2xl translate-x-8 md:translate-x-16"
+      className={
+        className ??
+        `relative w-full h-full min-h-[400px] md:min-h-[500px] overflow-hidden rounded-2xl ${offset ? 'translate-x-8 md:translate-x-16' : ''}`
+      }
     >
       <spline-viewer
-        url="https://prod.spline.design/yVgYuDzwhW1S10jx/scene.splinecode"
+        url={url}
         style={{
           width: '100%',
           height: '100%',
