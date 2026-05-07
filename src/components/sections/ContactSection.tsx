@@ -98,19 +98,21 @@ const ContactSection = () => {
             </AnimatedCard>
           </div>
 
-          {/* Right side - Spiral Galaxy */}
+          {/* Right side - Spline 3D Scene */}
           <motion.div 
-            className="hidden lg:flex items-center justify-center"
+            className="hidden lg:flex items-center justify-center w-full h-full"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-full max-w-md aspect-square">
-              <SplineScene
-                url="https://prod.spline.design/hYOv3CtDL8ZbKnRd/scene.splinecode"
-                className="relative w-full h-full overflow-hidden rounded-2xl"
-              />
+            <div className="flex items-center justify-center w-full h-full overflow-hidden rounded-3xl">
+              <div className="w-full max-w-[650px] h-[500px] md:h-[600px]">
+                <SplineScene
+                  url="https://prod.spline.design/hYOv3CtDL8ZbKnRd/scene.splinecode"
+                  className="relative w-full h-full overflow-hidden rounded-3xl"
+                />
+              </div>
             </div>
           </motion.div>
         </div>
