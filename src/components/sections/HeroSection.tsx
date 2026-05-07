@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Github, Download, ArrowRight } from 'lucide-react';
 import TypingEffect from '../TypingEffect';
-import DNAHelix from '../DNAHelix';
+import SplineScene from '../SplineScene';
 import AnimatedButton from '../AnimatedButton';
 
 const HeroSection = () => {
@@ -162,8 +162,8 @@ const HeroSection = () => {
                 }}
               />
               
-              {/* 3D DNA Helix */}
-              <DNAHelix />
+              {/* Spline 3D Scene */}
+              <SplineScene />
             </div>
           </motion.div>
         </div>
