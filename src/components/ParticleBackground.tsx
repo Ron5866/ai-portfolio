@@ -41,8 +41,8 @@ const ParticleBackground = () => {
           y: Math.random() * canvas.height,
           vx: (Math.random() - 0.5) * 0.6,
           vy: (Math.random() - 0.5) * 0.6,
-          size: Math.random() * 2.2 + 1,
-          opacity: Math.random() * 0.55 + 0.4,
+          size: Math.random() * 1.4 + 0.5,
+          opacity: Math.random() * 0.35 + 0.55,
           pulseOffset: Math.random() * Math.PI * 2,
           speedMultiplier: Math.random() * 0.5 + 0.75,
         });
