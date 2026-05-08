@@ -73,9 +73,9 @@ const ParticleBackground = () => {
             const mouseHighlight = mouseX > 0 ? Math.max(0, 1 - mouseDistToLine / 180) : 0;
             
             // Pulsing opacity for animation
-            const pulse = Math.sin(time * 0.02 + particle.pulseOffset) * 0.02;
-            const baseOpacity = (0.08 + pulse) * (1 - pDistance / 160);
-            const lineOpacity = baseOpacity + mouseHighlight * 0.15;
+            const pulse = Math.sin(time * 0.02 + particle.pulseOffset) * 0.03;
+            const baseOpacity = (0.14 + pulse) * (1 - pDistance / 160);
+            const lineOpacity = baseOpacity + mouseHighlight * 0.2;
             
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
