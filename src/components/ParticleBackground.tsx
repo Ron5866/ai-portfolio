@@ -41,8 +41,8 @@ const ParticleBackground = () => {
           y: Math.random() * canvas.height,
           vx: (Math.random() - 0.5) * 0.6,
           vy: (Math.random() - 0.5) * 0.6,
-          size: Math.random() * 2 + 0.8,
-          opacity: Math.random() * 0.5 + 0.25,
+          size: Math.random() * 2.2 + 1,
+          opacity: Math.random() * 0.55 + 0.4,
           pulseOffset: Math.random() * Math.PI * 2,
           speedMultiplier: Math.random() * 0.5 + 0.75,
         });
@@ -73,9 +73,9 @@ const ParticleBackground = () => {
             const mouseHighlight = mouseX > 0 ? Math.max(0, 1 - mouseDistToLine / 180) : 0;
             
             // Pulsing opacity for animation
-            const pulse = Math.sin(time * 0.02 + particle.pulseOffset) * 0.02;
-            const baseOpacity = (0.08 + pulse) * (1 - pDistance / 160);
-            const lineOpacity = baseOpacity + mouseHighlight * 0.15;
+            const pulse = Math.sin(time * 0.02 + particle.pulseOffset) * 0.03;
+            const baseOpacity = (0.14 + pulse) * (1 - pDistance / 160);
+            const lineOpacity = baseOpacity + mouseHighlight * 0.2;
             
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -124,22 +124,22 @@ const ParticleBackground = () => {
         const dotSize = particle.size + sizePulse + mouseGlowIntensity * 1.5;
         const dotOpacity = particle.opacity + mouseGlowIntensity * 0.4;
 
-        // Draw glowing dot
-        if (mouseGlowIntensity > 0.1) {
-          const glow = ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, dotSize * 3);
-          glow.addColorStop(0, `hsla(200, 70%, 60%, ${mouseGlowIntensity * 0.3})`);
-          glow.addColorStop(1, 'hsla(200, 70%, 60%, 0)');
-          ctx.fillStyle = glow;
-          ctx.beginPath();
-          ctx.arc(particle.x, particle.y, dotSize * 3, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        // Always draw soft glow halo for cosmic feel
+        const haloRadius = dotSize * (3 + mouseGlowIntensity * 2);
+        const glow = ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, haloRadius);
+        glow.addColorStop(0, `hsla(200, 90%, 70%, ${0.18 + mouseGlowIntensity * 0.35})`);
+        glow.addColorStop(0.5, `hsla(210, 80%, 60%, ${0.06 + mouseGlowIntensity * 0.15})`);
+        glow.addColorStop(1, 'hsla(210, 80%, 60%, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, haloRadius, 0, Math.PI * 2);
+        ctx.fill();
 
         // Draw dot
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, dotSize, 0, Math.PI * 2);
         const hue = 200 + mouseGlowIntensity * 25;
-        ctx.fillStyle = `hsla(${hue}, 65%, 58%, ${dotOpacity})`;
+        ctx.fillStyle = `hsla(${hue}, 80%, 72%, ${Math.min(1, dotOpacity + 0.15)})`;
         ctx.fill();
       });
 
