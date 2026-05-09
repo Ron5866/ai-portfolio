@@ -107,10 +107,17 @@ const ContactSection = () => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex items-center justify-center w-full h-full p-4 md:p-8 overflow-hidden rounded-3xl">
-              <div className="w-full max-w-[500px] h-[420px] md:h-[500px] scale-90">
+              <div
+                className="w-full max-w-[500px] h-[420px] md:h-[500px] scale-90"
+                style={{
+                  mixBlendMode: 'screen',
+                  filter: 'brightness(0.85) contrast(1.05)',
+                  background: 'transparent',
+                }}
+              >
                 <SplineScene
                   url="https://prod.spline.design/hYOv3CtDL8ZbKnRd/scene.splinecode"
-                  className="relative w-full h-full overflow-hidden rounded-3xl"
+                  className="relative w-full h-full overflow-hidden rounded-3xl bg-transparent"
                 />
               </div>
             </div>
