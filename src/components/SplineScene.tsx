@@ -40,6 +40,8 @@ const SplineScene = ({ url = DEFAULT_URL, className, offset = true }: SplineScen
       style.textContent = `
         spline-viewer::part(logo) { display: none !important; }
         spline-viewer #logo, spline-viewer a[href*="spline.design"] { display: none !important; }
+        spline-viewer { background: transparent !important; }
+        spline-viewer canvas { background: transparent !important; }
       `;
       document.head.appendChild(style);
     }
