@@ -106,12 +106,8 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="relative flex items-center justify-center w-full h-full overflow-hidden rounded-3xl">
-              {/* Soft cyan glow behind robot */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-[70%] h-[70%] rounded-full bg-cyan-400/10 blur-[100px]" />
-              </div>
-              <div className="relative w-full max-w-[650px] h-[500px] md:h-[600px]">
+            <div className="flex items-center justify-center w-full h-full overflow-hidden rounded-3xl">
+              <div className="w-full max-w-[650px] h-[500px] md:h-[600px]">
                 <SplineScene
                   url="https://prod.spline.design/hYOv3CtDL8ZbKnRd/scene.splinecode"
                   className="relative w-full h-full overflow-hidden rounded-3xl"
