@@ -106,12 +106,14 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-full max-w-[620px] aspect-square overflow-hidden rounded-3xl">
-              <SplineScene
-                url="https://prod.spline.design/cbvPgiD9LNEdMnt0/scene.splinecode"
-                offset={false}
-                className="relative w-full h-full overflow-hidden rounded-3xl bg-transparent"
-              />
+            <div className="flex items-center justify-center w-full h-full overflow-hidden rounded-3xl p-8">
+              <div className="w-full max-w-[540px] h-[460px] md:h-[520px] scale-[0.88]">
+                <SplineScene
+                  url="https://prod.spline.design/cbvPgiD9LNEdMnt0/scene.splinecode"
+                  offset={false}
+                  className="relative w-full h-full overflow-hidden rounded-3xl bg-transparent"
+                />
+              </div>
             </div>
           </motion.div>
         </div>
