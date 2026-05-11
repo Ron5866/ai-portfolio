@@ -55,7 +55,7 @@ const ContactSection = () => {
           </motion.p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-[55fr_45fr] gap-12 items-center">
           {/* Left side - Contact content */}
           <div className="max-w-xl">
             <div className="grid sm:grid-cols-3 gap-6 mb-12">
@@ -106,13 +106,17 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center justify-center w-full h-full overflow-hidden rounded-3xl p-8">
-              <div className="w-full max-w-[540px] h-[460px] md:h-[520px] scale-[0.88]">
-                <SplineScene
-                  url="https://prod.spline.design/cbvPgiD9LNEdMnt0/scene.splinecode"
-                  offset={false}
-                  className="relative w-full h-full overflow-hidden rounded-3xl bg-transparent"
-                />
+            <div className="flex items-center justify-center w-full h-full p-6 md:p-10">
+              <div className="relative flex items-center justify-center w-full max-w-[620px] h-[520px] rounded-[32px] border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-2xl">
+                {/* Soft inner glow */}
+                <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.12),transparent_70%)]" />
+                <div className="relative w-[85%] h-[85%] scale-[0.82]">
+                  <SplineScene
+                    url="https://prod.spline.design/cbvPgiD9LNEdMnt0/scene.splinecode"
+                    offset={false}
+                    className="relative w-full h-full overflow-hidden bg-transparent"
+                  />
+                </div>
               </div>
             </div>
           </motion.div>
