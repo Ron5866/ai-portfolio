@@ -38,8 +38,8 @@ const SplineScene = ({ url = DEFAULT_URL, className, offset = true }: SplineScen
       const style = document.createElement('style');
       style.id = styleId;
       style.textContent = `
-        spline-viewer::part(logo) { display: none !important; }
-        spline-viewer #logo, spline-viewer a[href*="spline.design"] { display: none !important; }
+        spline-viewer::part(logo) { display: none !important; opacity: 0 !important; visibility: hidden !important; margin: 0 !important; padding: 0 !important; height: 0 !important; }
+        spline-viewer #logo, spline-viewer a[href*="spline.design"] { display: none !important; opacity: 0 !important; visibility: hidden !important; margin: 0 !important; padding: 0 !important; height: 0 !important; }
         spline-viewer { background: transparent !important; }
         spline-viewer canvas { background: transparent !important; }
       `;
@@ -52,7 +52,15 @@ const SplineScene = ({ url = DEFAULT_URL, className, offset = true }: SplineScen
       const root = (viewer as any).shadowRoot as ShadowRoot | null;
       if (root) {
         const logo = root.querySelector('#logo') || root.querySelector('a[href*="spline.design"]');
-        if (logo) (logo as HTMLElement).style.display = 'none';
+        if (logo) {
+          const el = logo as HTMLElement;
+          el.style.display = 'none';
+          el.style.opacity = '0';
+          el.style.visibility = 'hidden';
+          el.style.height = '0';
+          el.style.margin = '0';
+          el.style.padding = '0';
+        }
       }
     };
 
