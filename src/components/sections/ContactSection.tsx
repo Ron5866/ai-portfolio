@@ -100,22 +100,18 @@ const ContactSection = () => {
 
           {/* Right side - Spline 3D Scene */}
           <motion.div 
-            className="hidden lg:flex items-center justify-center w-full h-full"
+            className="hidden lg:flex items-center justify-center w-full"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center justify-center w-full h-full p-4 md:p-8 overflow-hidden rounded-3xl">
-              <div
-                className="w-full max-w-[500px] h-[420px] md:h-[500px] scale-90"
-                style={{ background: 'transparent' }}
-              >
-                <SplineScene
-                  url="https://prod.spline.design/cbvPgiD9LNEdMnt0/scene.splinecode"
-                  className="relative w-full h-full overflow-hidden rounded-3xl bg-transparent"
-                />
-              </div>
+            <div className="w-full max-w-[620px] aspect-square overflow-hidden rounded-3xl">
+              <SplineScene
+                url="https://prod.spline.design/cbvPgiD9LNEdMnt0/scene.splinecode"
+                offset={false}
+                className="relative w-full h-full overflow-hidden rounded-3xl bg-transparent"
+              />
             </div>
           </motion.div>
         </div>
