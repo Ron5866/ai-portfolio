@@ -44,8 +44,8 @@ const GlobeDots = () => {
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
 
-      const c = Math.random() > 0.7 ? cyan : blue;
-      const dim = 0.5 + Math.random() * 0.5;
+      const c = Math.random() > 0.6 ? cyan : blue;
+      const dim = 0.8 + Math.random() * 0.2;
       colors[i * 3] = c.r * dim;
       colors[i * 3 + 1] = c.g * dim;
       colors[i * 3 + 2] = c.b * dim;
@@ -59,7 +59,7 @@ const GlobeDots = () => {
         <bufferAttribute attach="attributes-position" count={positions.length / 3} array={positions} itemSize={3} />
         <bufferAttribute attach="attributes-color" count={colors.length / 3} array={colors} itemSize={3} />
       </bufferGeometry>
-      <pointsMaterial size={0.035} vertexColors transparent opacity={0.9} sizeAttenuation blending={THREE.AdditiveBlending} depthWrite={false} />
+      <pointsMaterial size={0.05} vertexColors transparent opacity={1} sizeAttenuation blending={THREE.AdditiveBlending} depthWrite={false} />
     </points>
   );
 };
@@ -101,7 +101,7 @@ const GlobeGrid = () => {
         return (
           <primitive
             key={i}
-            object={new THREE.Line(geo, new THREE.LineBasicMaterial({ color: '#1e6fb8', transparent: true, opacity: 0.18 }))}
+            object={new THREE.Line(geo, new THREE.LineBasicMaterial({ color: '#2d8fd6', transparent: true, opacity: 0.3 }))}
           />
         );
       })}
@@ -145,7 +145,7 @@ const Arcs = () => {
       {arcs.map((arc, i) => (
         <mesh key={i}>
           <tubeGeometry args={[arc.curve, 40, 0.008, 6, false]} />
-          <meshBasicMaterial color={arc.color} transparent opacity={0.55} blending={THREE.AdditiveBlending} depthWrite={false} />
+          <meshBasicMaterial color={arc.color} transparent opacity={0.85} blending={THREE.AdditiveBlending} depthWrite={false} />
         </mesh>
       ))}
       {arcs.map((arc, i) => {
@@ -183,7 +183,7 @@ const Atmosphere = () => (
         varying vec3 vNormal;
         void main() {
           float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, -1.0)), 3.0);
-          gl_FragColor = vec4(glowColor, 1.0) * intensity * 0.6;
+          gl_FragColor = vec4(glowColor, 1.0) * intensity * 0.9;
         }
       `}
     />
@@ -239,7 +239,7 @@ const GlobeGroup = ({ mouse }: { mouse: { x: number; y: number } }) => {
       {/* Core dark sphere so back dots are occluded */}
       <mesh>
         <sphereGeometry args={[1.96, 48, 48]} />
-        <meshStandardMaterial color="#06121f" metalness={0.2} roughness={0.9} transparent opacity={0.95} />
+        <meshStandardMaterial color="#0a1c30" metalness={0.2} roughness={0.9} transparent opacity={0.95} />
       </mesh>
       <GlobeDots />
       <GlobeGrid />
