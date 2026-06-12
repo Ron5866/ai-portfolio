@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Mail, Linkedin, Github, MapPin, Send } from 'lucide-react';
 import AnimatedCard from '../AnimatedCard';
 import AnimatedButton from '../AnimatedButton';
-import InteractiveGlobe from '../InteractiveGlobe';
+import SplineScene from '../SplineScene';
 
 const ContactSection = () => {
   const contactLinks = [
@@ -106,9 +106,13 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center justify-center w-full h-full">
+            <div className="flex items-center justify-center w-full h-full overflow-hidden p-4 md:p-6">
               <div className="w-full max-w-[620px] h-[520px] md:h-[580px] mx-auto">
-                <InteractiveGlobe />
+                <SplineScene
+                  url="https://prod.spline.design/hYOv3CtDL8ZbKnRd/scene.splinecode"
+                  offset={false}
+                  className="relative w-full h-full overflow-hidden bg-transparent"
+                />
               </div>
             </div>
           </motion.div>
