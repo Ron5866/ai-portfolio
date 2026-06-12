@@ -239,7 +239,7 @@ const GlobeGroup = ({ mouse }: { mouse: { x: number; y: number } }) => {
       {/* Core dark sphere so back dots are occluded */}
       <mesh>
         <sphereGeometry args={[1.96, 48, 48]} />
-        <meshStandardMaterial color="#0a1c30" metalness={0.2} roughness={0.9} transparent opacity={0.95} />
+        <meshStandardMaterial color="#0a1c30" metalness={0.2} roughness={0.9} />
       </mesh>
       <GlobeDots />
       <GlobeGrid />
