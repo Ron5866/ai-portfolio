@@ -109,7 +109,7 @@ const ContactSection = () => {
             <div className="flex items-center justify-center w-full h-full overflow-hidden p-4 md:p-6">
               <div className="w-full max-w-[620px] h-[520px] md:h-[580px] mx-auto">
                 <SplineScene
-                  url="https://prod.spline.design/cbvPgiD9LNEdMnt0/scene.splinecode"
+                  url="https://prod.spline.design/hYOv3CtDL8ZbKnRd/scene.splinecode"
                   offset={false}
                   className="relative w-full h-full overflow-hidden bg-transparent"
                 />
