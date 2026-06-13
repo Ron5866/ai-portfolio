@@ -8,10 +8,6 @@ const services = [
   { icon: Server, label: 'LLM Integration' },
 ];
 
-const stats = [
-  { value: '5+', label: 'Completed Projects' },
-  { value: '8.2', label: 'CGPA' },
-];
 
 const AboutSection = () => {
   const containerVariants = {
@@ -110,34 +106,6 @@ const AboutSection = () => {
               </motion.p>
             </div>
 
-            {/* Stats */}
-            <motion.div 
-              variants={itemVariants}
-              className="grid grid-cols-3 gap-6"
-            >
-              {stats.map((stat, index) => (
-                <motion.div 
-                  key={stat.label} 
-                  className="text-center"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ 
-                    delay: 0.3 + index * 0.1,
-                    duration: 0.5,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <div className="text-3xl md:text-4xl font-display font-bold text-primary">
-                    {stat.value}<span className="text-accent">+</span>
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
         </div>
       </div>
