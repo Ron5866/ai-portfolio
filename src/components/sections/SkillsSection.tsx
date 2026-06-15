@@ -184,35 +184,23 @@ const SkillsSection = () => {
           </AnimatePresence>
         </div>
 
-        {/* All Skills Tags */}
-        <motion.div 
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
+        {/* AI Technologies Ecosystem */}
+        <motion.div
+          className="mt-20"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.6 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h3 className="text-lg font-semibold mb-6 text-muted-foreground">All Technologies</h3>
-          <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
-            {skills.map((skill, index) => (
-              <motion.span
-                key={skill.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.02, duration: 0.4 }}
-                whileHover={{ 
-                  scale: 1.1, 
-                  y: -3,
-                  borderColor: 'hsl(var(--primary))',
-                  color: 'hsl(var(--primary))'
-                }}
-                className="px-4 py-2 rounded-full border border-primary/30 text-sm text-muted-foreground transition-colors duration-300 cursor-default"
-              >
-                {skill.name}
-              </motion.span>
-            ))}
+          <div className="text-center mb-10">
+            <h3 className="text-2xl md:text-3xl font-display font-bold mb-3">
+              AI <span className="gradient-text">Technology Ecosystem</span>
+            </h3>
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+              Click any technology to explore experience, related projects, and connected tools.
+            </p>
           </div>
+          <TechEcosystem />
         </motion.div>
       </div>
     </section>
