@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import TechEcosystem from '../TechEcosystem';
 
 interface Skill {
   name: string;
