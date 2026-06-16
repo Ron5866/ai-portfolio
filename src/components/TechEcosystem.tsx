@@ -148,7 +148,6 @@ const TechCard = ({
   onClick,
   index,
   cardRef,
-  parallax,
 }: {
   tech: Tech;
   active: boolean;
@@ -157,8 +156,8 @@ const TechCard = ({
   cardRef: (el: HTMLDivElement | null) => void;
 }) => {
   const [hovered, setHovered] = useState(false);
-  const mouseRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   // Magnetic spring offsets
   const mx = useMotionValue(0);
@@ -177,10 +176,12 @@ const TechCard = ({
     const dy = e.clientY - cy;
     mx.set(dx * 0.18);
     my.set(dy * 0.18);
-    setMouse({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
+    // Update glow via ref to avoid re-rendering the card
+    if (glowRef.current) {
+      const gx = ((e.clientX - rect.left) / rect.width) * 100;
+      const gy = ((e.clientY - rect.top) / rect.height) * 100;
+      glowRef.current.style.background = `radial-gradient(circle at ${gx}% ${gy}%, hsl(var(--primary) / 0.3), transparent 55%)`;
+    }
   };
 
   const handleMouseLeave = () => {
