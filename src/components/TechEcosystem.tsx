@@ -275,13 +275,12 @@ const TechCard = ({
               transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: index * 0.6 }}
             />
 
-            {/* Mouse-follow glow */}
+            {/* Mouse-follow glow (updated via ref to avoid re-renders) */}
             <div
+              ref={glowRef}
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-              style={{
-                background: `radial-gradient(circle at ${mouse.x}% ${mouse.y}%, hsl(var(--primary) / 0.3), transparent 55%)`,
-              }}
             />
+
 
             {/* Pulse ring when active */}
             {active && (
