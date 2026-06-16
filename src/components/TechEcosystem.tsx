@@ -407,13 +407,7 @@ const TechEcosystem = () => {
   const midY = useTransform(spy, [-1, 1], [-10, 10]);
   const fgX = useTransform(spx, [-1, 1], [-4, 4]);
   const fgY = useTransform(spy, [-1, 1], [-4, 4]);
-  const [fg, setFg] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const unsubX = fgX.on('change', (v) => setFg((s) => ({ ...s, x: v })));
-    const unsubY = fgY.on('change', (v) => setFg((s) => ({ ...s, y: v })));
-    return () => { unsubX(); unsubY(); };
-  }, [fgX, fgY]);
 
   const handleContainerMouseMove = (e: React.MouseEvent) => {
     const rect = containerRef.current?.getBoundingClientRect();
