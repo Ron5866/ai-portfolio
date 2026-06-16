@@ -202,11 +202,7 @@ const TechCard = ({
       }}
       data-tech-id={tech.id}
       className={`relative ${tierSize[tech.tier]} cursor-pointer group`}
-      style={{
-        x: parallax.x,
-        y: parallax.y,
-        perspective: 800,
-      }}
+      style={{ perspective: 800 }}
       initial={{ opacity: 0, y: 40, scale: 0.9, filter: 'blur(8px)' }}
       whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-50px' }}
@@ -215,7 +211,6 @@ const TechCard = ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
-      layout
     >
       <motion.div
         animate={{ y: [0, -6, 0] }}
