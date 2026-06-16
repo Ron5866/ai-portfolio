@@ -155,10 +155,9 @@ const TechCard = ({
   onClick: (e: React.MouseEvent) => void;
   index: number;
   cardRef: (el: HTMLDivElement | null) => void;
-  parallax: { x: number; y: number };
 }) => {
   const [hovered, setHovered] = useState(false);
-  const [mouse, setMouse] = useState({ x: 50, y: 50 });
+  const mouseRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
   // Magnetic spring offsets
