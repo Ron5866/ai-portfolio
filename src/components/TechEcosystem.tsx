@@ -570,8 +570,11 @@ const TechEcosystem = () => {
         </AnimatePresence>
       </div>
 
-      {/* Layer 3: cards */}
-      <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 auto-rows-[minmax(150px,auto)] gap-4 md:gap-5">
+      {/* Layer 3: cards (parallax via motion values - no React re-renders) */}
+      <motion.div
+        style={{ x: fgX, y: fgY }}
+        className="relative z-10 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 auto-rows-[minmax(150px,auto)] gap-4 md:gap-5"
+      >
         {techs.map((tech, i) => (
           <TechCard
             key={tech.id}
@@ -582,10 +585,9 @@ const TechEcosystem = () => {
             cardRef={(el) => {
               cardRefs.current[tech.id] = el;
             }}
-            parallax={fg}
           />
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
