@@ -148,18 +148,16 @@ const TechCard = ({
   onClick,
   index,
   cardRef,
-  parallax,
 }: {
   tech: Tech;
   active: boolean;
   onClick: (e: React.MouseEvent) => void;
   index: number;
   cardRef: (el: HTMLDivElement | null) => void;
-  parallax: { x: number; y: number };
 }) => {
   const [hovered, setHovered] = useState(false);
-  const [mouse, setMouse] = useState({ x: 50, y: 50 });
   const innerRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   // Magnetic spring offsets
   const mx = useMotionValue(0);
@@ -178,10 +176,12 @@ const TechCard = ({
     const dy = e.clientY - cy;
     mx.set(dx * 0.18);
     my.set(dy * 0.18);
-    setMouse({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
+    // Update glow via ref to avoid re-rendering the card
+    if (glowRef.current) {
+      const gx = ((e.clientX - rect.left) / rect.width) * 100;
+      const gy = ((e.clientY - rect.top) / rect.height) * 100;
+      glowRef.current.style.background = `radial-gradient(circle at ${gx}% ${gy}%, hsl(var(--primary) / 0.3), transparent 55%)`;
+    }
   };
 
   const handleMouseLeave = () => {
@@ -202,11 +202,7 @@ const TechCard = ({
       }}
       data-tech-id={tech.id}
       className={`relative ${tierSize[tech.tier]} cursor-pointer group`}
-      style={{
-        x: parallax.x,
-        y: parallax.y,
-        perspective: 800,
-      }}
+      style={{ perspective: 800 }}
       initial={{ opacity: 0, y: 40, scale: 0.9, filter: 'blur(8px)' }}
       whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-50px' }}
@@ -215,7 +211,6 @@ const TechCard = ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
-      layout
     >
       <motion.div
         animate={{ y: [0, -6, 0] }}
@@ -251,20 +246,12 @@ const TechCard = ({
             className="relative h-full w-full rounded-2xl p-5 flex flex-col items-center justify-center text-center backdrop-blur-xl border border-white/5 overflow-hidden"
             animate={{
               boxShadow: active
-                ? [
-                    '0 20px 60px -10px hsl(var(--primary) / 0.45), inset 0 1px 0 hsl(var(--primary) / 0.25)',
-                    '0 30px 80px -10px hsl(var(--primary) / 0.7), inset 0 1px 0 hsl(var(--primary) / 0.35)',
-                    '0 20px 60px -10px hsl(var(--primary) / 0.45), inset 0 1px 0 hsl(var(--primary) / 0.25)',
-                  ]
+                ? '0 24px 70px -10px hsl(var(--primary) / 0.55), inset 0 1px 0 hsl(var(--primary) / 0.3)'
                 : hovered
                 ? '0 16px 50px -10px hsl(var(--primary) / 0.45), inset 0 1px 0 hsl(255 255 255 / 0.06)'
-                : [
-                    '0 4px 20px -4px hsl(220 70% 5% / 0.5)',
-                    '0 6px 28px -4px hsl(var(--primary) / 0.18)',
-                    '0 4px 20px -4px hsl(220 70% 5% / 0.5)',
-                  ],
+                : '0 4px 20px -4px hsl(220 70% 5% / 0.5)',
             }}
-            transition={{ duration: active ? 2.2 : hovered ? 0.3 : 5, repeat: active || !hovered ? Infinity : 0, ease: 'easeInOut' }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
             style={{
               background: 'linear-gradient(145deg, hsl(var(--card) / 0.85), hsl(var(--card) / 0.55))',
             }}
@@ -280,13 +267,12 @@ const TechCard = ({
               transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: index * 0.6 }}
             />
 
-            {/* Mouse-follow glow */}
+            {/* Mouse-follow glow (updated via ref to avoid re-renders) */}
             <div
+              ref={glowRef}
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-              style={{
-                background: `radial-gradient(circle at ${mouse.x}% ${mouse.y}%, hsl(var(--primary) / 0.3), transparent 55%)`,
-              }}
             />
+
 
             {/* Pulse ring when active */}
             {active && (
@@ -413,13 +399,7 @@ const TechEcosystem = () => {
   const midY = useTransform(spy, [-1, 1], [-10, 10]);
   const fgX = useTransform(spx, [-1, 1], [-4, 4]);
   const fgY = useTransform(spy, [-1, 1], [-4, 4]);
-  const [fg, setFg] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const unsubX = fgX.on('change', (v) => setFg((s) => ({ ...s, x: v })));
-    const unsubY = fgY.on('change', (v) => setFg((s) => ({ ...s, y: v })));
-    return () => { unsubX(); unsubY(); };
-  }, [fgX, fgY]);
 
   const handleContainerMouseMove = (e: React.MouseEvent) => {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -582,8 +562,11 @@ const TechEcosystem = () => {
         </AnimatePresence>
       </div>
 
-      {/* Layer 3: cards */}
-      <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 auto-rows-[minmax(150px,auto)] gap-4 md:gap-5">
+      {/* Layer 3: cards (parallax via motion values - no React re-renders) */}
+      <motion.div
+        style={{ x: fgX, y: fgY }}
+        className="relative z-10 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 auto-rows-[minmax(150px,auto)] gap-4 md:gap-5"
+      >
         {techs.map((tech, i) => (
           <TechCard
             key={tech.id}
@@ -594,10 +577,9 @@ const TechEcosystem = () => {
             cardRef={(el) => {
               cardRefs.current[tech.id] = el;
             }}
-            parallax={fg}
           />
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
