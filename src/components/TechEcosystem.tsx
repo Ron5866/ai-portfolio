@@ -246,20 +246,12 @@ const TechCard = ({
             className="relative h-full w-full rounded-2xl p-5 flex flex-col items-center justify-center text-center backdrop-blur-xl border border-white/5 overflow-hidden"
             animate={{
               boxShadow: active
-                ? [
-                    '0 20px 60px -10px hsl(var(--primary) / 0.45), inset 0 1px 0 hsl(var(--primary) / 0.25)',
-                    '0 30px 80px -10px hsl(var(--primary) / 0.7), inset 0 1px 0 hsl(var(--primary) / 0.35)',
-                    '0 20px 60px -10px hsl(var(--primary) / 0.45), inset 0 1px 0 hsl(var(--primary) / 0.25)',
-                  ]
+                ? '0 24px 70px -10px hsl(var(--primary) / 0.55), inset 0 1px 0 hsl(var(--primary) / 0.3)'
                 : hovered
                 ? '0 16px 50px -10px hsl(var(--primary) / 0.45), inset 0 1px 0 hsl(255 255 255 / 0.06)'
-                : [
-                    '0 4px 20px -4px hsl(220 70% 5% / 0.5)',
-                    '0 6px 28px -4px hsl(var(--primary) / 0.18)',
-                    '0 4px 20px -4px hsl(220 70% 5% / 0.5)',
-                  ],
+                : '0 4px 20px -4px hsl(220 70% 5% / 0.5)',
             }}
-            transition={{ duration: active ? 2.2 : hovered ? 0.3 : 5, repeat: active || !hovered ? Infinity : 0, ease: 'easeInOut' }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
             style={{
               background: 'linear-gradient(145deg, hsl(var(--card) / 0.85), hsl(var(--card) / 0.55))',
             }}
