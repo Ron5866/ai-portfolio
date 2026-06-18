@@ -40,7 +40,7 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
+        <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 xl:gap-12 items-center">
           {/* Left Content */}
           <motion.div
             className="max-w-xl"
@@ -48,10 +48,10 @@ const HeroSection = () => {
             initial="hidden"
             animate="visible"
           >
-            {/* Hello */}
+            {/* Intro greeting */}
             <motion.div variants={itemVariants}>
               <h2 className="text-4xl md:text-5xl font-display font-bold mb-2">
-                Hello<span className="text-primary">.</span>
+                Hey<span className="text-primary">.</span>
               </h2>
             </motion.div>
 
@@ -145,9 +145,9 @@ const HeroSection = () => {
               delay: 0.5,
               ease: [0.22, 1, 0.36, 1]
             }}
-            className="hidden lg:flex justify-center items-center"
+            className="hidden lg:flex justify-center items-center overflow-visible"
           >
-            <div className="relative w-[420px] h-[420px] flex items-center justify-center">
+            <div className="relative w-[min(56vw,640px)] h-[min(58vw,600px)] min-w-[520px] min-h-[520px] flex items-center justify-center overflow-visible">
               {/* Glow background */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-radial from-primary/20 via-transparent to-transparent blur-2xl"
@@ -163,7 +163,7 @@ const HeroSection = () => {
               />
               
               {/* Spline 3D Scene */}
-              <SplineScene />
+              <SplineScene offset={false} className="relative w-full h-full min-h-[520px] overflow-visible" />
             </div>
           </motion.div>
         </div>
