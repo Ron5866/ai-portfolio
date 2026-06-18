@@ -78,16 +78,17 @@ const SplineScene = ({ url = DEFAULT_URL, className, offset = true }: SplineScen
       ref={containerRef}
       className={
         className ??
-        `relative w-full h-full min-h-[400px] md:min-h-[500px] overflow-hidden rounded-2xl ${offset ? 'translate-x-8 md:translate-x-16' : ''}`
+        `relative w-full h-full min-h-[400px] md:min-h-[500px] overflow-visible rounded-2xl ${offset ? 'translate-x-8 md:translate-x-16' : ''}`
       }
     >
       <spline-viewer
         url={url}
         style={{
-          width: '100%',
-          height: '100%',
+          width: '112%',
+          height: '112%',
           background: 'transparent',
           display: 'block',
+          margin: '-6%',
         }}
       />
     </div>
