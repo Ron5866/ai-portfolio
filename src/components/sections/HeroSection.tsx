@@ -147,7 +147,7 @@ const HeroSection = () => {
             }}
             className="hidden lg:flex justify-center items-center overflow-visible"
           >
-            <div className="relative w-[min(56vw,640px)] h-[min(58vw,600px)] min-w-[520px] min-h-[520px] flex items-center justify-center overflow-visible">
+            <div className="relative w-[420px] h-[420px] flex items-center justify-center overflow-visible">
               {/* Glow background */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-radial from-primary/20 via-transparent to-transparent blur-2xl"
@@ -162,8 +162,8 @@ const HeroSection = () => {
                 }}
               />
               
-              {/* Spline 3D Scene */}
-              <SplineScene offset={false} className="relative w-full h-full min-h-[520px] overflow-visible" />
+              {/* Spline 3D Scene - oversized viewer so waving arm stays visible */}
+              <SplineScene offset={false} className="relative w-full h-full overflow-visible" />
             </div>
           </motion.div>
         </div>
