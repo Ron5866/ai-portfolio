@@ -99,10 +99,13 @@ const AboutSection = () => {
                 variants={itemVariants}
                 className="text-muted-foreground leading-relaxed"
               >
-                I'm a Computer Science and Engineering student specializing in Artificial Intelligence 
-                at Parul University. I'm passionate about developing AI solutions that address real-world 
-                challenges. My focus areas include Machine Learning, Deep Learning, and Large Language Models, 
-                with a growing interest in RAG systems.
+                Driven by curiosity and a passion for innovation, I enjoy building AI-powered solutions 
+                that transform complex challenges into practical outcomes. My interests span Machine Learning, 
+                Deep Learning, Large Language Models, and RAG systems, where I constantly explore new ways to 
+                create intelligent and impactful applications. I thrive on turning ideas into meaningful user 
+                experiences, combining creativity with technology to solve real-world problems. With every 
+                project, I aim to learn, experiment, and push the boundaries of what's possible through 
+                artificial intelligence.
               </motion.p>
             </div>
 
