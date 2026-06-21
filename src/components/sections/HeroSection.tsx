@@ -155,7 +155,7 @@ const HeroSection = () => {
               delay: 0.5,
               ease: [0.22, 1, 0.36, 1]
             }}
-            className="hidden lg:flex justify-center items-center overflow-visible"
+            className="hidden lg:flex justify-center items-center overflow-visible lg:translate-x-[10%] xl:translate-x-[12%]"
           >
             <div className="relative w-[420px] h-[420px] flex items-center justify-center overflow-visible">
               {/* Glow background */}
