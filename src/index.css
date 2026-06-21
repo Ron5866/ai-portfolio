@@ -386,7 +386,48 @@
   animation: glow-pulse 3s ease-in-out infinite;
 }
 
+/* Hero aurora — slow living gradient behind neural network */
+.hero-aurora {
+  background:
+    radial-gradient(60% 50% at 20% 30%, rgba(37, 99, 235, 0.18), transparent 70%),
+    radial-gradient(55% 45% at 80% 20%, rgba(30, 58, 138, 0.22), transparent 75%),
+    radial-gradient(70% 60% at 70% 80%, rgba(59, 130, 246, 0.14), transparent 75%),
+    radial-gradient(50% 50% at 30% 75%, rgba(17, 34, 64, 0.35), transparent 80%),
+    linear-gradient(135deg, #020817 0%, #071126 30%, #0A1730 55%, #0F172A 80%, #112240 100%);
+  background-size: 220% 220%, 200% 200%, 240% 240%, 200% 200%, 200% 200%;
+  background-position: 0% 50%, 100% 0%, 50% 100%, 0% 100%, 0% 0%;
+  animation: hero-aurora-drift 32s ease-in-out infinite;
+  filter: saturate(1.05);
+}
+
+@keyframes hero-aurora-drift {
+  0%, 100% {
+    background-position: 0% 50%, 100% 0%, 50% 100%, 0% 100%, 0% 0%;
+  }
+  50% {
+    background-position: 100% 50%, 0% 100%, 50% 0%, 100% 0%, 100% 100%;
+  }
+}
+
+.hero-glow-a { animation: hero-glow-drift-a 26s ease-in-out infinite; }
+.hero-glow-b { animation: hero-glow-drift-b 34s ease-in-out infinite; }
+.hero-glow-c { animation: hero-glow-drift-c 28s ease-in-out infinite; }
+
+@keyframes hero-glow-drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
+  50%      { transform: translate(40px, 30px) scale(1.1); opacity: 0.8; }
+}
+@keyframes hero-glow-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  50%      { transform: translate(-50px, -20px) scale(1.08); opacity: 0.75; }
+}
+@keyframes hero-glow-drift-c {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.45; }
+  50%      { transform: translate(20px, -40px) scale(1.12); opacity: 0.7; }
+}
+
 /* Scrollbar styling */
+
 ::-webkit-scrollbar {
   width: 8px;
 }

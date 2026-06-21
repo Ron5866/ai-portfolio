@@ -39,8 +39,18 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      {/* Layer 1: slow animated gradient backdrop */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hero-aurora" />
+      {/* Layer 3: subtle blue glow spots */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-[15%] left-[10%] w-[420px] h-[420px] rounded-full bg-[#2563EB]/10 blur-[120px] hero-glow-a" />
+        <div className="absolute bottom-[10%] right-[15%] w-[520px] h-[520px] rounded-full bg-[#3B82F6]/10 blur-[140px] hero-glow-b" />
+        <div className="absolute top-[40%] right-[35%] w-[300px] h-[300px] rounded-full bg-[#1E3A8A]/15 blur-[100px] hero-glow-c" />
+      </div>
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
+
           {/* Left Content */}
           <motion.div
             className="max-w-xl"
@@ -145,7 +155,7 @@ const HeroSection = () => {
               delay: 0.5,
               ease: [0.22, 1, 0.36, 1]
             }}
-            className="hidden lg:flex justify-center items-center overflow-visible"
+            className="hidden lg:flex justify-center items-center overflow-visible lg:translate-x-[10%] xl:translate-x-[12%]"
           >
             <div className="relative w-[420px] h-[420px] flex items-center justify-center overflow-visible">
               {/* Glow background */}
